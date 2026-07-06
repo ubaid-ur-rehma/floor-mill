@@ -17,7 +17,7 @@
     <meta name="description" content="Contact Nazir Atta Chakki in Mustafabad, Lahore by phone, WhatsApp, or email for fresh wheat flour and rice orders.">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style type="text/css">
+ <style type="text/css">
         *{
             margin: 0px;
             padding: 0px;
@@ -27,19 +27,50 @@
             font-size: 40px;
             margin: 20px;
             cursor: pointer;
+             color: brown;
+            animation-name: harryp;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-direction: normal;
+            animation-delay: 2s;
+            
+        }
+        @keyframes harryp{
+            from{
+                color: rgb(255, 255, 255);
+            }
+            to{
+
+                color: rgb(255, 0, 0);
+            }
         }
 .menu{
     width: 25%;
     height: 100vh;
-    background: rgb(0, 0, 0);
-    
+    background: linear-gradient(45deg,red,black,red);
     position: fixed;
     top: 0px;
     left: -25%;
     transition: 1s;
+     animation-name: harryt;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-direction: normal;
+            animation-delay: 2s;
+}
+@keyframes harryt{
+    from{
+        background: linear-gradient( 45deg,red,blue,red);
+    }
+    to{
+        background: linear-gradient(rgb(0, 0, 0));
+    }
+
 }
 .menu h2{
-    color: rgb(0, 0, 0);
+    color: white;
     padding: 25px;
 }
 .menu ul li a{
@@ -58,7 +89,7 @@
 .smenu{
     left: 0%;
 }
-</style>
+    </style>
 </head>
 <body>
     <h1 class="shop-title">NAZIR ATTA CHAKKI</h1>
@@ -114,4 +145,4 @@
         <p class="copyright">&copy; ALL RIGHTS RESERVED 2026</p>
     </footer>
 </body>
-    </html>
+</html>
