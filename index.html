@@ -17,7 +17,7 @@
     <meta name="description" content="Nazir Atta Chakki - quality wheat flour, white atta, and rice in Mustafabad, Lahore. Fresh, traditional chakki-ground flour trusted for decades.">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style type="text/css">
+ <style type="text/css">
         *{
             margin: 0px;
             padding: 0px;
@@ -27,20 +27,53 @@
             font-size: 40px;
             margin: 20px;
             cursor: pointer;
+            color: brown;
+            animation-name: harryp;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-direction: normal;
+            animation-delay: 2s;
+            
         }
+        @keyframes harryp{
+            from{
+                color: rgb(255, 255, 255);
+            }
+            to{
+
+                color: rgb(255, 0, 0);
+            }
+        }
+        
+
 .menu{
     width: 25%;
     height: 100vh;
-    background: rgb(0, 0, 0);
-    
-    position: fixed;
+    background:linear-gradient(45deg,red,blue,red);
+ position: fixed;
     top: 0px;
     left: -25%;
     transition: 1s;
+    animation-name: harryt;
+            animation-duration: 2s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-direction: normal;
+            animation-delay: 2s;
+}
+@keyframes harryt{
+    from{
+        background: linear-gradient( 45deg,red,blue,red);
+    }
+    to{
+        background: linear-gradient(rgb(0, 0, 0));
+    }
 }
 .menu h2{
-    color: rgb(0, 0, 0);
+    color: white;
     padding: 25px;
+    font-size: 30px;
 }
 .menu ul li a{
     display: block;
@@ -50,7 +83,7 @@
 }
 .close{
     font-size: 40px;
-    color: blue;
+    color: rgb(255, 255, 255);
     cursor: pointer;
     position: absolute;
     right: 10px;
@@ -58,7 +91,7 @@
 .smenu{
     left: 0%;
 }
-</style>
+    </style>
 </head>
 <body>
     <h1 class="shop-title">NAZIR ATTA CHAKKI</h1>
