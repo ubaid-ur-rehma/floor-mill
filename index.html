@@ -1,13 +1,23 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nazir Atta Chakki | Wheat Flour Shop, Mustafabad Lahore</title>
+    <meta property="og:site_name" content="Nazir Atta Chakki">
+    <link rel="icon" type="image/jpeg" href="favicon.jpeg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-18K6K5WSCK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-18K6K5WSCK');
+    </script>
     <meta name="description" content="Nazir Atta Chakki - quality wheat flour, white atta, and rice in Mustafabad, Lahore. Fresh, traditional chakki-ground flour trusted for decades.">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style type="text/css">
+<style type="text/css">
         *{
             margin: 0px;
             padding: 0px;
@@ -21,7 +31,7 @@
 .menu{
     width: 25%;
     height: 100vh;
-    background: linear-gradient(45deg,red,blue,black);
+    background: rgb(0, 0, 0);
     border-radius: 20px;
     position: fixed;
     top: 0px;
@@ -29,7 +39,7 @@
     transition: 1s;
 }
 .menu h2{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     padding: 25px;
 }
 .menu ul li a{
@@ -48,38 +58,30 @@
 .smenu{
     left: 0%;
 }
-    </style>
+</style>
 </head>
 <body>
     <h1 class="shop-title">NAZIR ATTA CHAKKI</h1>
 
-    <!-- <div id="header">
-        <button id="home"><a href="location.html">location</a></button>
-        <button id="products"><a href="product.html">products</a></button>
-        <button id="aboutus"><a href="about.html">about us</a></button>
-        <button id="contactus"><a href="contact.html">contact us</a></button>
-    </div> -->
-      <span class="ticon" onclick="showMenu()">&#9776;</span>
-     <div class="menu">
+    <span class="ticon" onclick="showMenu()">&#9776;</span>
+    <div class="menu">
         <span class="close" onclick="closeMenu()">&times;</span>
- <h2>NAZIR ATTA CHAKKI</h2>
- <ul>
-    <li><a href="location.html">location</a></li>
-    <li><a href="about.html">about us</a></li>
-    <li><a href="product.html">product</a></li>
-    <li><a href="contact.html">contact us</a></li>
- </ul>
-     </div>
-     <script type="text/javascript">
-    function showMenu(){
-    var m=document.querySelector('.menu');
-    m.classList.add('smenu');
-    }
-     function closeMenu(){
-    var m=document.querySelector('.menu');
-    m.classList.remove('smenu');
-    }
-</script>
+        <h2>NAZIR ATTA CHAKKI</h2>
+        <ul>
+            <li><a href="location.html">location</a></li>
+            <li><a href="about.html">about us</a></li>
+            <li><a href="product.html">products</a></li>
+            <li><a href="contact.html">contact us</a></li>
+        </ul>
+    </div>
+    <script>
+        function showMenu(){
+            document.querySelector('.menu').classList.add('smenu');
+        }
+        function closeMenu(){
+            document.querySelector('.menu').classList.remove('smenu');
+        }
+    </script>
 
     <h3 id="well">well known as pather wali chakki. we sale quality goods such as wheat floor, white atta, narala supreme rice</h3>
 
@@ -112,7 +114,6 @@
 
     <div id="contact">
         <h3 style="text-align:center; font-size: clamp(22px,4vw,40px);">CONTACT US</h3>
-
         <div class="contact-row">
             <i class="fa-solid fa-phone fa-beat-fade fa-sm" style="color: rgb(255,0,0);"></i>
             <h2>Phone: 03494043371, 03297466292</h2>
@@ -154,4 +155,4 @@
         <p class="copyright">&copy; ALL RIGHTS RESERVED 2026</p>
     </footer>
 </body>
-            </html>
+</html>
