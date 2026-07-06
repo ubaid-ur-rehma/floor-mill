@@ -1,244 +1,11 @@
-/* body{
-    background:url(atta9.jpeg);
-   background-repeat: no-repeat; background-size: cover;
-    background-attachment: fixed;
-}
-#header{
-    margin-left: 400px;
-     position: relative;
-     bottom: 50px;
-      display: flex;
-      align-items: center;
-       justify-content: space-evenly;
-}
-#home{
-    background-color: rgb(0, 0, 0);
-    height: 50px;
-    width: 150px;
-    color: rgb(255, 255, 255);
-    font-size: 25px;
-     border-radius: 20px;
-     font-weight: 900;
-}
-#home:hover{
-    background-color: rgb(255, 255, 255);
-}
-#products{
-     background-color: rgb(0, 0, 0);
-    height: 50px;
-    width: 150px;
-    color: rgb(255, 255, 255);
-    font-size: 25px;
-     border-radius: 20px;
-     font-weight: 900;
-}
-#products:hover{
-    background-color: rgb(255, 255, 255);
-}
-#aboutus{
-     background-color: rgb(0, 0, 0);
-    height: 50px;
-    width: 150px;
-    color: rgb(255, 255, 255);
-    font-size: 25px;
-     border-radius: 20px;
-     font-weight: 900;
-}
-#aboutus:hover{
-    background-color: rgb(255, 255, 255);
-}
-#contactus{
-     background-color: rgb(0, 0, 0);
-    height: 50px;
-    width: 150px;
-    color: rgb(255, 255, 255);
-    font-size: 25px;
-     border-radius: 20px;
-     font-weight: 700;
-    
-}
-#contactus:hover{
-    background-color: rgb(255, 255, 255);
-}
-#our{
-    color: rgb(255, 255, 255);
-     text-align: center;
-       background-color: black;
-        border-radius: 20px;
-        margin-left: 450px;
-        width: 530px;
-        height: 50px;
-}
-#item1{
-    height: 400px;
-    width: 500px;
-    border: 5px solid black;
-     position: relative;
-     top: 100px;
-     left: 500px;
-      box-shadow: 10px 0px 30px 10px rgb(174, 121, 121);
-       border-radius: 20px ;
-        color: white;
-         background-color: black;
-         animation-name: harry3;
-         animation-timing-function: ease-in-out;
-         animation-delay: 2s;
-         animation-duration: 2s;
-         animation-iteration-count: infinite;
-         animation-direction: normal;
-}
-@keyframes harry3{
-    from{
-        transform: translateY(0px);
-    }
-    to{
-        transform: translateY(30px);
-    }
-}
-#atta2{
-    height: 200px;
-     width: 50%;
-      position: relative;
-       left: 120px;
-        top: 30px;
-      border-radius: 20px;
-       
-}
-#item2{
-    height: 400px;
-    width: 500px;
-    border: 5px solid black;
-     position: relative;
-     top: 200px;
-     left: 500px;
-      box-shadow: 10px 20px 30px 10px rgb(174, 121, 121);
-       border-radius: 20px ;
-        color: white;
-        background-color: black;
-        animation-name: harry7;
-         animation-timing-function: ease-in-out;
-         animation-delay: 2s;
-         animation-duration: 2s;
-         animation-iteration-count: infinite;
-         animation-direction: normal;
-}
-@keyframes harry7{
-    from{
-        transform: translateY(0px);
-    }
-    to{
-        transform: translateY(30px);
-    }
-}
-#atta2{
-     height: 200px;
-     width: 50%;
-      position: relative;
-       left: 120px;
-        top: 30px;
-      border-radius: 20px;
-}
-#atta4{
-    height: 200px;
-     width: 50%;
-      position: relative;
-       left: 120px;
-        top: 30px;
-      border-radius: 20px;
-}
-#item3{
- height: 400px;
-    width: 500px;
-    border: 5px solid black;
-     position: relative;
-     top: 300px;
-     left: 500px;
-      box-shadow: 10px 0px 30px 10px rgb(174, 121, 121);
-       border-radius: 20px ;
-        color: white;   
-        background-color: black;
-animation-name: harry9;
-         animation-timing-function: ease-in-out;
-         animation-delay: 2s;
-         animation-duration: 2s;
-         animation-iteration-count: infinite;
-         animation-direction: normal;
-}
-@keyframes harry9{
-    from{
-        transform: translateY(0px);
-    }
-    to{
-        transform: translateY(50px);
-    }
-    }
-#about{
-     height: 400px;
-    width: 1000px;
-    border: 5px solid black;
-     position: relative;
-     top: 400px;
-     left: 250px;
-      box-shadow: 10px 0px 30px 10px rgb(174, 121, 121);
-       border-radius: 20px ;
-        color: white;  
-         background-color: black; 
-}
-#contact{
-    height: 450px;
-    width: 1000px;
-    border: 5px solid rgb(255, 252, 252);
-     position: relative;
-     top: 500px;
-     left: 250px;
-      box-shadow: 10px 0px 30px 10px rgb(174, 121, 121);
-       border-radius: 20px ;
-        color: white;  
-         background-color: black; 
-}
-#map{
-      height: 600px;
-    width: 1000px;
-    border: 5px solid rgb(255, 252, 252);
-     position: relative;
-     top: 520px;
-     left: 250px;
-      box-shadow: 10px 0px 30px 10px rgb(174, 121, 121);
-       border-radius: 20px ;
-        color: white;  
-         background-color: black; 
-         display: inline-block;
-        }
-        iframe{
-            position: relative;
-            bottom:100px;
-            left: 400px;
-         border-radius: 20px;
-        }
-        #well{
-            animation-name: harry2;
-            animation-timing-function: ease-in-out;
-            animation-delay: 2s;
-            animation-duration: 2s;
-            animation-iteration-count: infinite;
-            animation-direction: normal;
-             transform: translateY(20px);
-        }
-        @keyframes harry2{
-            from{
-                transform: translateY(0px);
-            }
-            to{
-                transform: translateY(-50px);
-            }
-        } */
-         /* ===== Reset & base ===== */
+    /* ===== Reset & base ===== */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
     background-image: url(atta9.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -250,49 +17,65 @@ body {
 
 /* ===== Shop title ===== */
 .shop-title {
-    margin: 40px auto 20px;
+    margin: 20px auto 10px;
     color: black;
     font-size: clamp(28px, 8vw, 100px);
     text-align: center;
     padding: 0 10px;
 }
 
-/* ===== Nav header ===== */
-#header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    max-width: 900px;
-    margin: 0 auto 40px;
-    padding: 0 10px;
-}
-
-#header button,
-#home, #products, #aboutus, #contactus {
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
-    font-size: clamp(16px, 3vw, 25px);
-    font-weight: 900;
-    border-radius: 20px;
-    border: none;
-    height: 50px;
-    min-width: 120px;
-    padding: 0 10px;
+/* ===== Hamburger menu ===== */
+.ticon {
+    font-size: 40px;
+    margin: 15px 20px;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-#header button a,
-#home a, #products a, #aboutus a, #contactus a {
-    color: inherit;
-    text-decoration: none;
-}
-
-#home:hover, #products:hover, #aboutus:hover, #contactus:hover {
-    background-color: rgb(255, 255, 255);
     color: black;
+    display: inline-block;
+}
+
+.menu {
+    width: 70%;
+    max-width: 280px;
+    height: 100vh;
+    background: rgb(0, 0, 0);
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 0.4s;
+    z-index: 100;
+    box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+}
+
+.menu h2 {
+    color: white;
+    padding: 25px;
+    font-size: clamp(18px, 4vw, 24px);
+}
+
+.menu ul li a {
+    display: block;
+    padding: 12px 25px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.2s ease;
+}
+
+.menu ul li a:hover {
+    background-color: rgba(255,255,255,0.15);
+}
+
+.close {
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.smenu {
+    left: 0;
 }
 
 /* ===== Intro tagline ===== */
@@ -341,7 +124,6 @@ body {
     padding: 0 15px;
 }
 
-#item1, #item2, #item3,
 .product-card {
     background-color: black;
     color: white;
@@ -364,7 +146,6 @@ body {
     to { transform: translateY(15px); }
 }
 
-#atta2, #atta4,
 .product-card img {
     width: 100%;
     max-width: 250px;
@@ -493,8 +274,7 @@ footer .copyright {
     color: black;
     padding: 12px 0;
     margin-top: 15px;
-}
-
+        }
 /* ===== Responsive tweaks ===== */
 @media (max-width: 600px) {
     #header {
