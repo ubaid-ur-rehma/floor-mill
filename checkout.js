@@ -4,9 +4,15 @@
 //   POST /api/orders              -> create order
 //   POST /api/orders/:id/pay      -> start payment
 //   POST /api/payments/:s/confirm -> confirm payment
+//
+// API location:
+//   - When the backend serves this page (npm start), it is the SAME origin -> "".
+//   - When this page is hosted on GitHub Pages and the backend is on Render,
+//     set window.API_BASE_URL (see the <script> in checkout.html) to the
+//     backend URL, e.g. "https://nazir-atta-chakki.onrender.com".
 // ============================================================================
 
-const API = ""; // same origin
+const API = (typeof window !== "undefined" && window.API_BASE_URL) || "";
 
 const state = {
     products: [],

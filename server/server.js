@@ -35,6 +35,18 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 
+// ---------------------------------------------------------------- CORS
+// Allow the site (e.g. GitHub Pages) to call this API from another origin.
+// Set ALLOWED_ORIGIN in the environment to lock it down in production;
+// defaults to "*" so the free Render deploy works out of the box.
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN || "*");
+    res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
+});
+
 // ---------------------------------------------------------------- API routes
 
 app.get("/api/shop", (_req, res) => {

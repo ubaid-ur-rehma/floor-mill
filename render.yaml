@@ -1,0 +1,40 @@
+# ============================================================================
+# Render Blueprint — deploys the Nazir Atta Chakki backend (Node/Express).
+#
+# How to use:
+#   1. Push this repository to GitHub.
+#   2. Go to https://dashboard.render.com → New → Blueprint.
+#   3. Pick this repo. Render reads this file and creates the service.
+#   4. Set the environment variables in the dashboard (see envVars below).
+#
+# Docs: https://render.com/docs/blueprint-spec
+# ============================================================================
+
+services:
+  - type: web
+    name: nazir-atta-chakki
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/shop
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: PAYMENT_MODE
+        value: sandbox          # change to "live" once merchant credentials exist
+      - key: PAYMENT_SIGNING_SECRET
+        generateValue: true     # Render generates a strong secret automatically
+      # ---- Add these in the dashboard when you go live (do NOT commit real values) ----
+      # - key: EASYPAISA_STORE_ID
+      #   sync: false
+      # - key: EASYPAISA_MERCHANT_ID
+      #   sync: false
+      # - key: EASYPAISA_HASH_KEY
+      #   sync: false
+      # - key: JAZZCASH_MERCHANT_ID
+      #   sync: false
+      # - key: JAZZCASH_PASSWORD
+      #   sync: false
+      # - key: JAZZCASH_INTEGRITY_SALT
+      #   sync: false
