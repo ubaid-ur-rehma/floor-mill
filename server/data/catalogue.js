@@ -17,8 +17,8 @@ export const SHOP = {
 };
 
 export const PAYMENT_ACCOUNTS = {
-    easypaisa: { label: "Easypaisa", number: "0329 7466292", holder: "Nazir Atta Chakki" },
-    jazzcash: { label: "JazzCash", number: "0349 4043371", holder: "Nazir Atta Chakki" },
+    easypaisa: { label: "Easypaisa", number: "0316 4395007", holder: "Nazir Atta Chakki" },
+    jazzcash: { label: "JazzCash", number: "0316 4395007", holder: "Nazir Atta Chakki" },
     bank: {
         label: "Bank Transfer",
         bankName: "Meezan Bank",
