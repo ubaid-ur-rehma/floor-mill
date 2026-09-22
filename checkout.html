@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Nazir Atta Chakki, Mustafabad Lahore</title>
+    <meta property="og:site_name" content="Nazir Atta Chakki">
+    <link rel="icon" type="image/jpeg" href="favicon.jpeg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-18K6K5WSCK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-18K6K5WSCK');
+    </script>
+    <meta name="description"
+        content="Place your order at Nazir Atta Chakki. Choose your products, add quantities, and pay securely via Easypaisa, JazzCash, bank transfer, or cash on delivery.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .checkout-wrap {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 32px;
+            max-width: 1080px;
+            margin: 40px auto 60px;
+            padding: 0 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 860px) {
+            .checkout-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .co-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .co-card h2 {
+            font-size: 22px;
+            color: var(--brand-dark);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .co-card h2 i {
+            color: var(--accent-dark);
+        }
+
+        .cart-line {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .cart-line img {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .cart-line .cl-info {
+            flex: 1;
+        }
+
+        .cart-line .cl-info h4 {
+            font-size: 16px;
+            color: var(--brand-dark);
+        }
+
+        .cart-line .cl-info span {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .qty {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qty button {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--brand-dark);
+        }
+
+        .qty button:hover {
+            border-color: var(--accent);
+        }
+
+        .qty input {
+            width: 48px;
+            text-align: center;
+            padding: 6px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .cart-line .cl-total {
+            font-weight: 800;
+            color: var(--brand);
+            min-width: 92px;
+            text-align: right;
+        }
+
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .totals-row.grand {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--brand-dark);
+            border-top: 2px solid var(--line);
+            margin-top: 8px;
+            padding-top: 14px;
+        }
+
+        .pay-choice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .pay-choice:hover {
+            border-color: var(--accent);
+        }
+
+        .pay-choice.selected {
+            border-color: var(--brand);
+            background: #fdf8ef;
+        }
+
+        .pay-choice input {
+            accent-color: var(--brand);
+            width: 18px;
+            height: 18px;
+        }
+
+        .pay-choice .pc-icon {
+            font-size: 22px;
+            width: 26px;
+            text-align: center;
+        }
+
+        .pay-choice .pc-text strong {
+            display: block;
+            color: var(--brand-dark);
+            font-size: 15px;
+        }
+
+        .pay-choice .pc-text span {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .checkout-summary {
+            position: sticky;
+            top: 90px;
+        }
+
+        .status-box {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14.5px;
+            display: none;
+        }
+
+        .status-box.show {
+            display: block;
+        }
+
+        .status-box.ok {
+            background: #e9f7ee;
+            border: 1px solid #b6e3c4;
+            color: #14652f;
+        }
+
+        .status-box.error {
+            background: #fdecea;
+            border: 1px solid #f5c2c0;
+            color: #a5231b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="tb-left">
+            <span><i class="fa-solid fa-location-dot"></i> 196 Allama Iqbal Road, Mustafabad, Lahore</span>
+            <span><i class="fa-solid fa-clock"></i> Open Daily &middot; 8:00 AM &ndash; 9:00 PM</span>
+        </div>
+        <div class="tb-right">
+            <a href="tel:+923494043371"><i class="fa-solid fa-phone"></i> 0349 4043371</a>
+            <a href="https://wa.me/923297466292" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i>
+                WhatsApp</a>
+        </div>
+    </div>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="favicon.jpeg" alt="Nazir Atta Chakki logo">
+            <span class="brand-text">
+                <strong>NAZIR ATTA CHAKKI</strong>
+                <span>Since 1975 &middot; Lahore</span>
+            </span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleMenu()">&#9776;</button>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="payment.html">Payment</a>
+            <a href="about.html">About</a>
+            <a href="location.html">Location</a>
+            <a href="contact.html">Contact</a>
+            <a href="checkout.html" class="active">Checkout</a>
+        </nav>
+    </header>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mainNav').classList.toggle('open');
+        }
+    </script>
+
+    <div class="checkout-wrap">
+        <!-- LEFT: cart + customer -->
+        <div>
+            <div class="co-card">
+                <h2><i class="fa-solid fa-basket-shopping"></i> Your Order</h2>
+                <div id="cart"></div>
+            </div>
+
+            <div class="co-card">
+                <h2><i class="fa-solid fa-user"></i> Your Details</h2>
+                <div class="form-row">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="e.g. Ahmed Khan" required>
+                </div>
+                <div class="form-row">
+                    <label for="phone">Phone / WhatsApp</label>
+                    <input type="tel" id="phone" placeholder="e.g. 03001234567" required>
+                </div>
+                <div class="form-row">
+                    <label for="note">Order Note (optional)</label>
+                    <textarea id="note" rows="2" placeholder="Pickup time or special instructions"></textarea>
+                </div>
+            </div>
+
+            <div class="co-card">
+                <h2><i class="fa-solid fa-credit-card"></i> Payment Method</h2>
+                <div id="payChoices"></div>
+            </div>
+        </div>
+
+        <!-- RIGHT: summary -->
+        <div class="checkout-summary">
+            <div class="co-card">
+                <h2><i class="fa-solid fa-receipt"></i> Summary</h2>
+                <div id="totals"></div>
+                <button class="btn" id="placeOrderBtn" style="width:100%; justify-content:center; margin-top:18px;">
+                    <i class="fa-solid fa-lock"></i> Place Order &amp; Pay
+                </button>
+                <div id="statusBox" class="status-box"></div>
+                <p style="font-size:12.5px; color:var(--muted); text-align:center; margin-top:14px;">
+                    <i class="fa-solid fa-shield-halved"></i> Secure checkout &middot; Takeaway only
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <h3>NAZIR ATTA CHAKKI</h3>
+        <h2>Phone: 03494043371, 03297466292</h2>
+        <h2>Address: 196 Allama Iqbal Road, Mustafabad</h2>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="payment.html">Payment</a>
+            <a href="about.html">About</a>
+            <a href="location.html">Location</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <p class="copyright">&copy; ALL RIGHTS RESERVED 2026 &middot; NAZIR ATTA CHAKKI</p>
+    </footer>
+
+    <script src="checkout.js"></script>
+</body>
+
+</html>

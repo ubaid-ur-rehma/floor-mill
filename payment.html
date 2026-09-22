@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Methods | Nazir Atta Chakki, Mustafabad Lahore</title>
+    <meta property="og:site_name" content="Nazir Atta Chakki">
+    <link rel="icon" type="image/jpeg" href="favicon.jpeg">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-18K6K5WSCK"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-18K6K5WSCK');
+    </script>
+    <meta name="description"
+        content="Payment methods for Nazir Atta Chakki - pay via Easypaisa, JazzCash, bank transfer, or cash on delivery in Mustafabad, Lahore.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="tb-left">
+            <span><i class="fa-solid fa-location-dot"></i> 196 Allama Iqbal Road, Mustafabad, Lahore</span>
+            <span><i class="fa-solid fa-clock"></i> Open Daily &middot; 8:00 AM &ndash; 9:00 PM</span>
+        </div>
+        <div class="tb-right">
+            <a href="tel:+923494043371"><i class="fa-solid fa-phone"></i> 0349 4043371</a>
+            <a href="https://wa.me/923297466292" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i>
+                WhatsApp</a>
+        </div>
+    </div>
+    <header class="site-header">
+        <a class="brand" href="index.html">
+            <img src="favicon.jpeg" alt="Nazir Atta Chakki logo">
+            <span class="brand-text">
+                <strong>NAZIR ATTA CHAKKI</strong>
+                <span>Since 1975 &middot; Lahore</span>
+            </span>
+        </a>
+        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleMenu()">&#9776;</button>
+        <nav class="main-nav" id="mainNav">
+            <a href="index.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="payment.html" class="active">Payment</a>
+            <a href="about.html">About</a>
+            <a href="location.html">Location</a>
+            <a href="contact.html">Contact</a>
+            <a href="checkout.html">Checkout</a>
+        </nav>
+    </header>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mainNav').classList.toggle('open');
+        }
+    </script>
+
+    <!-- ===== Payment hero ===== -->
+    <section class="payment-hero">
+        <h1>PAYMENT METHODS</h1>
+        <p>Simple, safe and flexible payment options. Pay online with your mobile wallet or bank &mdash; or simply pay
+            cash when you collect your order.</p>
+    </section>
+
+    <!-- ===== Accepted payment logos ===== -->
+    <div class="accepted-strip">
+        <span class="strip-label">We accept</span>
+        <span class="pay-logo pay-logo--easypaisa"><i class="fa-solid fa-mobile-screen-button"></i> Easypaisa</span>
+        <span class="pay-logo pay-logo--jazz"><i class="fa-solid fa-wallet"></i> JazzCash</span>
+        <span class="pay-logo pay-logo--bank"><i class="fa-solid fa-building-columns"></i> Bank Transfer</span>
+        <span class="pay-logo pay-logo--cod"><i class="fa-solid fa-hand-holding-dollar"></i> Cash on Delivery</span>
+    </div>
+
+    <!-- ===== Detailed method cards ===== -->
+    <div class="pay-methods">
+        <div class="pay-method">
+            <span class="method-badge">Popular</span>
+            <div class="method-logo" style="color:#00a651;"><i class="fa-solid fa-mobile-screen-button"></i>
+                Easypaisa</div>
+            <p>Send your payment instantly from any Easypaisa mobile account or shop.</p>
+            <ul class="method-steps">
+                <li>Open your Easypaisa app</li>
+                <li>Choose "Send Money"</li>
+                <li>Enter the number below &amp; confirm</li>
+            </ul>
+            <div class="account-box">
+                <span class="acc-label">Account No.</span>
+                <span class="acc-value">0329 7466292</span>
+            </div>
+        </div>
+
+        <div class="pay-method">
+            <span class="method-badge">Popular</span>
+            <div class="method-logo" style="color:#e4002b;"><i class="fa-solid fa-wallet"></i> JazzCash</div>
+            <p>Pay quickly using your JazzCash mobile wallet &mdash; no bank visit needed.</p>
+            <ul class="method-steps">
+                <li>Open your JazzCash app</li>
+                <li>Choose "Money Transfer"</li>
+                <li>Enter the number below &amp; confirm</li>
+            </ul>
+            <div class="account-box">
+                <span class="acc-label">Account No.</span>
+                <span class="acc-value">0349 4043371</span>
+            </div>
+        </div>
+
+        <div class="pay-method">
+            <div class="method-logo" style="color:#1f4e79;"><i class="fa-solid fa-building-columns"></i> Bank
+                Transfer</div>
+            <p>Transfer directly from your bank account. Contact us for our bank details.</p>
+            <ul class="method-steps">
+                <li>Contact us for account details</li>
+                <li>Make an online / ATM transfer</li>
+                <li>Share the receipt with us</li>
+            </ul>
+            <div class="account-box">
+                <span class="acc-label">Ask us at</span>
+                <span class="acc-value">0329 7466292</span>
+            </div>
+        </div>
+
+        <div class="pay-method">
+            <span class="method-badge">No fee</span>
+            <div class="method-logo" style="color:#b8860b;"><i class="fa-solid fa-hand-holding-dollar"></i> Cash on
+                Delivery</div>
+            <p>Pay in cash when you collect your order from our shop. Takeaway only.</p>
+            <ul class="method-steps">
+                <li>Place your order on WhatsApp</li>
+                <li>Collect from our shop</li>
+                <li>Pay cash at the counter</li>
+            </ul>
+            <div class="account-box">
+                <span class="acc-label">Payment</span>
+                <span class="acc-value">At Pickup</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Trust badges ===== -->
+    <div class="trust-bar">
+        <div class="trust-item"><i class="fa-solid fa-shield-halved"></i> 100% Secure</div>
+        <div class="trust-item"><i class="fa-solid fa-truck-fast"></i> Fresh Takeaway</div>
+        <div class="trust-item"><i class="fa-solid fa-certificate"></i> Trusted Since 1975</div>
+        <div class="trust-item"><i class="fa-solid fa-headset"></i> WhatsApp Support</div>
+    </div>
+
+    <!-- ===== How payment works ===== -->
+    <div class="pay-flow">
+        <h2>HOW PAYMENT WORKS</h2>
+        <div class="flow-steps">
+            <div class="flow-step">
+                <div class="step-num">1</div>
+                <h4>Choose Products</h4>
+                <p>Pick your atta or rice from our <a href="product.html">products page</a>.</p>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">2</div>
+                <h4>Send Order</h4>
+                <p>Message your order on WhatsApp to 0329 7466292.</p>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">3</div>
+                <h4>Make Payment</h4>
+                <p>Pay via Easypaisa, JazzCash, bank, or cash on pickup.</p>
+            </div>
+            <div class="flow-step">
+                <div class="step-num">4</div>
+                <h4>Confirm</h4>
+                <p>Share your payment screenshot to confirm the order.</p>
+            </div>
+        </div>
+        <p class="pay-note" style="display:flex; justify-content:center; margin:26px auto 0;">
+            <i class="fa-solid fa-circle-info"></i> Need help paying? WhatsApp us anytime at 0329 7466292.
+        </p>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <img src="favicon.jpeg" alt="Nazir Atta Chakki logo">
+                    <strong>NAZIR ATTA CHAKKI</strong>
+                </div>
+                <p>A name of trust and purity since 1975. Fresh, traditionally chakki-ground wheat flour, white atta and
+                    premium rice in Mustafabad, Lahore.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/923297466292" target="_blank" rel="noopener" aria-label="WhatsApp"><i
+                            class="fa-brands fa-whatsapp"></i></a>
+                    <a href="tel:+923494043371" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+                    <a href="mailto:munawarhussein60@gmail.com" aria-label="Email"><i
+                            class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="product.html">Products</a>
+                <a href="payment.html">Payment</a>
+                <a href="about.html">About Us</a>
+                <a href="location.html">Location</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div>
+                <h4>Our Products</h4>
+                <a href="product.html">Desi Gandum ke Atta</a>
+                <a href="product.html">Narala Supreme Chawal</a>
+                <a href="product.html">White Atta</a>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p><i class="fa-solid fa-location-dot"></i> 196 Allama Iqbal Road, Mustafabad, Lahore</p>
+                <p><i class="fa-solid fa-phone"></i> 0349 4043371, 0329 7466292</p>
+                <p><i class="fa-solid fa-envelope"></i> munawarhussein60@gmail.com</p>
+            </div>
+        </div>
+        <p class="copyright">&copy; ALL RIGHTS RESERVED 2026 &middot; NAZIR ATTA CHAKKI &middot; MADE IN LAHORE</p>
+    </footer>
+
+    <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="whatsapp-float"
+        aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+</body>
+
+</html>

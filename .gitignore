@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Environment (never commit real credentials)
+.env
+
+# Order data (local)
+server/data/orders.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
