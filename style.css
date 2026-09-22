@@ -1445,3 +1445,132 @@ footer .copyright {
         padding: 24px 18px;
     }
 }
+/* ============================ Payment method modal ============================ */
+.pay-logo {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.pay-logo:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.pay-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pay-modal.open {
+    display: flex;
+}
+
+.pay-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(31, 18, 8, 0.6);
+    backdrop-filter: blur(3px);
+    animation: fadeIn 0.25s ease;
+}
+
+.pay-modal__panel {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    max-width: 460px;
+    width: 100%;
+    padding: 34px 30px 30px;
+    text-align: center;
+    animation: popIn 0.28s cubic-bezier(0.2, 0.8, 0.3, 1.1);
+}
+
+.pay-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.pay-modal__close:hover {
+    color: var(--brand-dark);
+}
+
+.pay-modal__icon {
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    border-radius: 50%;
+    background: #fdf3dd;
+}
+
+.pay-modal__panel h3 {
+    font-size: 24px;
+    color: var(--brand-dark);
+    margin-bottom: 12px;
+}
+
+.pay-modal__panel p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.pay-modal__account {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--bg);
+    border: 1px dashed var(--accent-dark);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+}
+
+.pay-modal__account .acc-label {
+    font-size: 12.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pay-modal__account .acc-value {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--brand-dark);
+    letter-spacing: 0.5px;
+}
+
+.pay-modal__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}

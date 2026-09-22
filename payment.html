@@ -71,15 +71,19 @@
     <!-- ===== Accepted payment logos ===== -->
     <div class="accepted-strip">
         <span class="strip-label">We accept</span>
-        <span class="pay-logo pay-logo--easypaisa"><i class="fa-solid fa-mobile-screen-button"></i> Easypaisa</span>
-        <span class="pay-logo pay-logo--jazz"><i class="fa-solid fa-wallet"></i> JazzCash</span>
-        <span class="pay-logo pay-logo--bank"><i class="fa-solid fa-building-columns"></i> Bank Transfer</span>
-        <span class="pay-logo pay-logo--cod"><i class="fa-solid fa-hand-holding-dollar"></i> Cash on Delivery</span>
+        <button type="button" class="pay-logo pay-logo--easypaisa" data-target="pm-easypaisa"><i
+                class="fa-solid fa-mobile-screen-button"></i> Easypaisa</button>
+        <button type="button" class="pay-logo pay-logo--jazz" data-target="pm-jazzcash"><i class="fa-solid fa-wallet"></i>
+            JazzCash</button>
+        <button type="button" class="pay-logo pay-logo--bank" data-target="pm-bank"><i
+                class="fa-solid fa-building-columns"></i> Bank Transfer</button>
+        <button type="button" class="pay-logo pay-logo--cod" data-target="pm-cod"><i
+                class="fa-solid fa-hand-holding-dollar"></i> Cash on Delivery</button>
     </div>
 
     <!-- ===== Detailed method cards ===== -->
     <div class="pay-methods">
-        <div class="pay-method">
+        <div class="pay-method" id="pm-easypaisa">
             <span class="method-badge">Popular</span>
             <div class="method-logo" style="color:#00a651;"><i class="fa-solid fa-mobile-screen-button"></i>
                 Easypaisa</div>
@@ -95,7 +99,7 @@
             </div>
         </div>
 
-        <div class="pay-method">
+        <div class="pay-method" id="pm-jazzcash">
             <span class="method-badge">Popular</span>
             <div class="method-logo" style="color:#e4002b;"><i class="fa-solid fa-wallet"></i> JazzCash</div>
             <p>Pay quickly using your JazzCash mobile wallet &mdash; no bank visit needed.</p>
@@ -110,7 +114,7 @@
             </div>
         </div>
 
-        <div class="pay-method">
+        <div class="pay-method" id="pm-bank">
             <div class="method-logo" style="color:#1f4e79;"><i class="fa-solid fa-building-columns"></i> Bank
                 Transfer</div>
             <p>Transfer directly from your bank account. Contact us for our bank details.</p>
@@ -125,7 +129,7 @@
             </div>
         </div>
 
-        <div class="pay-method">
+        <div class="pay-method" id="pm-cod">
             <span class="method-badge">No fee</span>
             <div class="method-logo" style="color:#b8860b;"><i class="fa-solid fa-hand-holding-dollar"></i> Cash on
                 Delivery</div>
@@ -141,6 +145,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.accepted-strip [data-target]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var el = document.getElementById(btn.getAttribute('data-target'));
+                if (!el) return;
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
+                el.style.borderColor = 'var(--accent)';
+                el.style.boxShadow = 'var(--shadow-lg)';
+                setTimeout(function () {
+                    el.style.borderColor = '';
+                    el.style.boxShadow = '';
+                }, 1600);
+            });
+        });
+    </script>
 
     <!-- ===== Trust badges ===== -->
     <div class="trust-bar">

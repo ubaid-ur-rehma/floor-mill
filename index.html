@@ -244,13 +244,18 @@
                 <p>Pay online with your mobile wallet or bank &mdash; or simply pay cash when you collect your order.</p>
             </div>
             <div class="accepted-strip">
-                <span class="pay-logo pay-logo--easypaisa"><i class="fa-solid fa-mobile-screen-button"></i>
-                    Easypaisa</span>
-                <span class="pay-logo pay-logo--jazz"><i class="fa-solid fa-wallet"></i> JazzCash</span>
-                <span class="pay-logo pay-logo--bank"><i class="fa-solid fa-building-columns"></i> Bank Transfer</span>
-                <span class="pay-logo pay-logo--cod"><i class="fa-solid fa-hand-holding-dollar"></i> Cash on
-                    Delivery</span>
+                <button type="button" class="pay-logo pay-logo--easypaisa" data-pay="easypaisa"><i
+                        class="fa-solid fa-mobile-screen-button"></i> Easypaisa</button>
+                <button type="button" class="pay-logo pay-logo--jazz" data-pay="jazzcash"><i
+                        class="fa-solid fa-wallet"></i> JazzCash</button>
+                <button type="button" class="pay-logo pay-logo--bank" data-pay="bank"><i
+                        class="fa-solid fa-building-columns"></i> Bank Transfer</button>
+                <button type="button" class="pay-logo pay-logo--cod" data-pay="cod"><i
+                        class="fa-solid fa-hand-holding-dollar"></i> Cash on Delivery</button>
             </div>
+            <p style="text-align:center; color:var(--muted); font-size:14px; margin:-24px 0 30px;">
+                <i class="fa-solid fa-hand-pointer"></i> Tap a payment method to see details
+            </p>
             <div class="trust-bar">
                 <div class="trust-item"><i class="fa-solid fa-shield-halved"></i> 100% Secure</div>
                 <div class="trust-item"><i class="fa-solid fa-certificate"></i> Trusted Since 1975</div>
@@ -327,6 +332,103 @@
 
         <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="whatsapp-float"
             aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+        <!-- ===== Payment detail modal ===== -->
+        <div class="pay-modal" id="payModal" aria-hidden="true">
+            <div class="pay-modal__backdrop" data-close></div>
+            <div class="pay-modal__panel" role="dialog" aria-modal="true" aria-labelledby="payModalTitle">
+                <button class="pay-modal__close" data-close aria-label="Close">&times;</button>
+                <div class="pay-modal__icon" id="payModalIcon"><i class="fa-solid fa-wallet"></i></div>
+                <h3 id="payModalTitle">Payment</h3>
+                <p id="payModalText"></p>
+                <div class="pay-modal__account" id="payModalAccount"></div>
+                <div class="pay-modal__actions">
+                    <a href="checkout.html" class="btn"><i class="fa-solid fa-arrow-right"></i> Order Now</a>
+                    <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="btn btn-green"><i
+                            class="fa-brands fa-whatsapp"></i> Ask on WhatsApp</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            (function () {
+                var payInfo = {
+                    easypaisa: {
+                        title: "Easypaisa",
+                        icon: "fa-solid fa-mobile-screen-button",
+                        color: "#00a651",
+                        text: "Send your payment instantly from any Easypaisa mobile account or shop.",
+                        steps: "1) Open Easypaisa app  &nbsp; 2) Send Money  &nbsp; 3) Enter the number below",
+                        account: "0329 7466292",
+                        label: "Easypaisa Account No.",
+                    },
+                    jazzcash: {
+                        title: "JazzCash",
+                        icon: "fa-solid fa-wallet",
+                        color: "#e4002b",
+                        text: "Pay quickly using your JazzCash mobile wallet \u2014 no bank visit needed.",
+                        steps: "1) Open JazzCash app  &nbsp; 2) Money Transfer  &nbsp; 3) Enter the number below",
+                        account: "0349 4043371",
+                        label: "JazzCash Account No.",
+                    },
+                    bank: {
+                        title: "Bank Transfer",
+                        icon: "fa-solid fa-building-columns",
+                        color: "#1f4e79",
+                        text: "Transfer directly from your bank account. Contact us for our full account details, then share the receipt.",
+                        steps: "1) Contact us  &nbsp; 2) Make an online / ATM transfer  &nbsp; 3) Share the receipt",
+                        account: "0329 7466292",
+                        label: "Call / WhatsApp for details",
+                    },
+                    cod: {
+                        title: "Cash on Delivery",
+                        icon: "fa-solid fa-hand-holding-dollar",
+                        color: "#b8860b",
+                        text: "Pay in cash when you collect your order from our shop. Takeaway only.",
+                        steps: "1) Place your order  &nbsp; 2) Collect from our shop  &nbsp; 3) Pay cash at the counter",
+                        account: "At Pickup",
+                        label: "Payment",
+                    },
+                };
+
+                var modal = document.getElementById("payModal");
+                var iconEl = document.getElementById("payModalIcon");
+                var titleEl = document.getElementById("payModalTitle");
+                var textEl = document.getElementById("payModalText");
+                var acctEl = document.getElementById("payModalAccount");
+
+                function openModal(key) {
+                    var info = payInfo[key];
+                    if (!info) return;
+                    iconEl.style.color = info.color;
+                    iconEl.innerHTML = '<i class="' + info.icon + '"></i>';
+                    titleEl.textContent = info.title;
+                    textEl.innerHTML = info.text + '<br><br><strong style="color:var(--brand-dark)">How to pay:</strong><br>' + info.steps;
+                    acctEl.innerHTML = '<span class="acc-label">' + info.label + '</span><span class="acc-value">' + info.account + '</span>';
+                    modal.classList.add("open");
+                    modal.setAttribute("aria-hidden", "false");
+                    document.body.style.overflow = "hidden";
+                }
+
+                function closeModal() {
+                    modal.classList.remove("open");
+                    modal.setAttribute("aria-hidden", "true");
+                    document.body.style.overflow = "";
+                }
+
+                document.querySelectorAll("[data-pay]").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        openModal(btn.getAttribute("data-pay"));
+                    });
+                });
+                modal.querySelectorAll("[data-close]").forEach(function (el) {
+                    el.addEventListener("click", closeModal);
+                });
+                document.addEventListener("keydown", function (e) {
+                    if (e.key === "Escape") closeModal();
+                });
+            })();
+        </script>
     </body>
 
 </html>
