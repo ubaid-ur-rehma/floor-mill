@@ -67,52 +67,8 @@
 
     <!-- ===== Products ===== -->
     <section class="section" style="padding-top:0;">
-        <div class="products-grid">
-            <article class="product-card">
-                <div class="thumb">
-                    <span class="tag">Bestseller</span>
-                    <img src="atta2.jpeg" alt="Desi gandum ke atta">
-                </div>
-                <div class="body">
-                    <h3>Desi Gandum ke Atta</h3>
-                    <p>Whole-wheat desi atta, traditionally ground for a rich, natural taste and full nutrition.</p>
-                    <div class="foot">
-                        <span class="price">Rs 180 <small>per kilo</small></span>
-                        <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="mini-btn"><i
-                                class="fa-brands fa-whatsapp"></i> Order</a>
-                    </div>
-                </div>
-            </article>
-            <article class="product-card">
-                <div class="thumb">
-                    <span class="tag">Premium</span>
-                    <img src="atta3.jpeg" alt="Narala supreme chawal">
-                </div>
-                <div class="body">
-                    <h3>Narala Supreme Chawal</h3>
-                    <p>Long-grain premium rice with a delicate aroma &mdash; perfect for biryani and everyday meals.</p>
-                    <div class="foot">
-                        <span class="price">Rs 400&ndash;430 <small>per kilo</small></span>
-                        <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="mini-btn"><i
-                                class="fa-brands fa-whatsapp"></i> Order</a>
-                    </div>
-                </div>
-            </article>
-            <article class="product-card">
-                <div class="thumb">
-                    <span class="tag">Daily Use</span>
-                    <img src="atta4.jpeg" alt="White atta">
-                </div>
-                <div class="body">
-                    <h3>White Atta</h3>
-                    <p>Fine, soft white atta that gives perfect rotis, naan and bakery at home.</p>
-                    <div class="foot">
-                        <span class="price">Rs 180 <small>per kilo</small></span>
-                        <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="mini-btn"><i
-                                class="fa-brands fa-whatsapp"></i> Order</a>
-                    </div>
-                </div>
-            </article>
+        <div class="products-grid" id="productsGrid">
+            <p class="loading-note"><i class="fa-solid fa-spinner fa-spin"></i> Loading products…</p>
         </div>
     </section>
 
@@ -123,33 +79,8 @@
             <h2>Simple &amp; Fair Pricing</h2>
             <p>All prices are per kilogram and may vary slightly with market rates.</p>
         </div>
-        <div class="menu-grid">
-            <div class="menu-item">
-                <img src="atta2.jpeg" alt="Desi gandum ke atta">
-                <div class="mi-body">
-                    <h3>Desi Gandum ke Atta <span class="mi-price">Rs 180/kg</span></h3>
-                    <p>Whole wheat, traditionally chakki-ground.</p>
-                    <div class="mi-tags"><span class="chip">Bestseller</span><span class="chip">Whole Wheat</span>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="atta3.jpeg" alt="Narala supreme chawal">
-                <div class="mi-body">
-                    <h3>Narala Supreme Chawal <span class="mi-price">Rs 400&ndash;430/kg</span></h3>
-                    <p>Premium long-grain aromatic rice.</p>
-                    <div class="mi-tags"><span class="chip">Premium</span><span class="chip">Rice</span></div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <img src="atta4.jpeg" alt="White atta">
-                <div class="mi-body">
-                    <h3>White Atta <span class="mi-price">Rs 180/kg</span></h3>
-                    <p>Soft &amp; fine white flour for daily use.</p>
-                    <div class="mi-tags"><span class="chip">Daily Use</span><span class="chip">Fine Flour</span>
-                    </div>
-                </div>
-            </div>
+        <div class="menu-grid" id="priceList">
+            <p class="loading-note"><i class="fa-solid fa-spinner fa-spin"></i> Loading price list…</p>
         </div>
     </section>
 
@@ -229,5 +160,67 @@
 
     <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="whatsapp-float"
         aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <script>
+        window.API_BASE_URL = window.API_BASE_URL || "";
+    </script>
+    <script>
+        (function () {
+            var API = window.API_BASE_URL || "";
+            var shopPhone = "923297466292";
+            var grid = document.getElementById("productsGrid");
+            var list = document.getElementById("priceList");
+
+            function priceText(p) {
+                return (p.priceMax && p.priceMax !== p.price)
+                    ? "Rs " + p.price + "\u2013" + p.priceMax
+                    : "Rs " + p.price;
+            }
+
+            function card(p) {
+                return '<article class="product-card">' +
+                    '<div class="thumb">' +
+                    (p.tag ? '<span class="tag">' + p.tag + '</span>' : '') +
+                    '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy">' +
+                    '</div>' +
+                    '<div class="body">' +
+                    '<h3>' + p.name + '</h3>' +
+                    '<p>' + p.description + '</p>' +
+                    '<div class="foot">' +
+                    '<span class="price">' + priceText(p) + ' <small>per ' + p.unit + '</small></span>' +
+                    '<a href="https://wa.me/' + shopPhone + '" target="_blank" rel="noopener" class="mini-btn"><i class="fa-brands fa-whatsapp"></i> Order</a>' +
+                    '</div></div></article>';
+            }
+
+            function row(p) {
+                return '<div class="menu-item">' +
+                    '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy">' +
+                    '<div class="mi-body">' +
+                    '<h3>' + p.name + ' <span class="mi-price">' + priceText(p) + '/' + p.unit + '</span></h3>' +
+                    '<p>' + p.description + '</p>' +
+                    '<div class="mi-tags">' +
+                    (p.tag ? '<span class="chip">' + p.tag + '</span>' : '') +
+                    '<span class="chip">' + p.category + '</span>' +
+                    '</div></div></div>';
+            }
+
+            fetch(API + "/api/products")
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    var products = data.products || [];
+                    if (!products.length) {
+                        grid.innerHTML = "<p class='loading-note'>No products available right now.</p>";
+                        list.innerHTML = "";
+                        return;
+                    }
+                    grid.innerHTML = products.map(card).join("");
+                    list.innerHTML = products.map(row).join("");
+                })
+                .catch(function () {
+                    grid.innerHTML = "<p class='loading-note'>Could not load products. Please refresh, or order on WhatsApp.</p>";
+                    list.innerHTML = "";
+                });
+        })();
+    </script>
 </body>
 </html>

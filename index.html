@@ -24,6 +24,13 @@
     </head>
 
     <body>
+        <!-- API location. Leave EMPTY when the backend serves this page (npm start).
+             When hosting the front end on GitHub Pages, set this to your Render
+             backend URL, e.g. "https://nazir-atta-chakki.onrender.com". -->
+        <script>
+            window.API_BASE_URL = "";
+        </script>
+
         <!-- ===== Top bar ===== -->
         <div class="topbar">
             <div class="tb-left">
@@ -109,52 +116,9 @@
                 <h2>Fresh From the Chakki</h2>
                 <p>Hand-picked, freshly ground and available for takeaway. Prices are per kilogram.</p>
             </div>
-            <div class="products-grid">
-                <article class="product-card">
-                    <div class="thumb">
-                        <span class="tag">Bestseller</span>
-                        <img src="atta2.jpeg" alt="Desi gandum ke atta">
-                    </div>
-                    <div class="body">
-                        <h3>Desi Gandum ke Atta</h3>
-                        <p>Whole-wheat desi atta, traditionally ground for rich taste and nutrition.</p>
-                        <div class="foot">
-                            <span class="price">Rs 180 <small>per kilo</small></span>
-                            <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="mini-btn"><i
-                                    class="fa-brands fa-whatsapp"></i> Order</a>
-                        </div>
-                    </div>
-                </article>
-                <article class="product-card">
-                    <div class="thumb">
-                        <span class="tag">Premium</span>
-                        <img src="atta3.jpeg" alt="Narala supreme chawal">
-                    </div>
-                    <div class="body">
-                        <h3>Narala Supreme Chawal</h3>
-                        <p>Long-grain premium rice with an aromatic taste &mdash; perfect for every meal.</p>
-                        <div class="foot">
-                            <span class="price">Rs 400&ndash;430 <small>per kilo</small></span>
-                            <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="mini-btn"><i
-                                    class="fa-brands fa-whatsapp"></i> Order</a>
-                        </div>
-                    </div>
-                </article>
-                <article class="product-card">
-                    <div class="thumb">
-                        <span class="tag">Daily Use</span>
-                        <img src="atta4.jpeg" alt="White atta">
-                    </div>
-                    <div class="body">
-                        <h3>White Atta</h3>
-                        <p>Fine, soft white atta for perfect rotis, naan and bakery at home.</p>
-                        <div class="foot">
-                            <span class="price">Rs 180 <small>per kilo</small></span>
-                            <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="mini-btn"><i
-                                    class="fa-brands fa-whatsapp"></i> Order</a>
-                        </div>
-                    </div>
-                </article>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products load dynamically from the backend catalogue -->
+                <p class="loading-note"><i class="fa-solid fa-spinner fa-spin"></i> Loading products…</p>
             </div>
         </section>
 
@@ -328,6 +292,50 @@
 
         <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="whatsapp-float"
             aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+        <!-- ===== Load products from the backend catalogue ===== -->
+        <script>
+            (function () {
+                var API = window.API_BASE_URL || "";
+                var grid = document.getElementById("productsGrid");
+                var shopPhone = "923297466292";
+
+                function money(p) {
+                    if (p.priceMax && p.priceMax !== p.price) {
+                        return "Rs " + p.price + "\u2013" + p.priceMax;
+                    }
+                    return "Rs " + p.price;
+                }
+
+                function card(p) {
+                    return '<article class="product-card">' +
+                        '<div class="thumb">' +
+                        (p.tag ? '<span class="tag">' + p.tag + '</span>' : '') +
+                        '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy">' +
+                        '</div>' +
+                        '<div class="body">' +
+                        '<h3>' + p.name + '</h3>' +
+                        '<p>' + p.description + '</p>' +
+                        '<div class="foot">' +
+                        '<span class="price">' + money(p) + ' <small>per ' + p.unit + '</small></span>' +
+                        '<a href="https://wa.me/' + shopPhone + '" target="_blank" rel="noopener" class="mini-btn"><i class="fa-brands fa-whatsapp"></i> Order</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</article>';
+                }
+
+                fetch(API + "/api/products")
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        var products = data.products || [];
+                        if (!products.length) { grid.innerHTML = "<p class='loading-note'>No products available right now.</p>"; return; }
+                        grid.innerHTML = products.map(card).join("");
+                    })
+                    .catch(function () {
+                        grid.innerHTML = "<p class='loading-note'>Could not load products. Please refresh, or order on WhatsApp.</p>";
+                    });
+            })();
+        </script>
 
         <!-- ===== Payment detail modal ===== -->
         <div class="pay-modal" id="payModal" aria-hidden="true">

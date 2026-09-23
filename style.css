@@ -1824,4 +1824,26 @@ iframe {
         flex-direction: column;
         gap: 14px;
     }
+}/* ============================ Dynamic product loading ============================ */
+.loading-note {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+    padding: 40px 20px;
+}
+
+.loading-note i {
+    color: var(--accent-dark);
+    margin-right: 6px;
+}
+
+/* Product card body equal-height so all cards line up in the grid */
+.product-card .body {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card .body p {
+    flex: 1;
 }
