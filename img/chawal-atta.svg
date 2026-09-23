@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Chawal ka Atta">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2f6fb"/>
+      <stop offset="1" stop-color="#cddcee"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <g fill="#5b7ba6" opacity="0.8">
+    <ellipse cx="90" cy="95" rx="9" ry="5"/><ellipse cx="120" cy="135" rx="9" ry="5"/>
+    <ellipse cx="70" cy="160" rx="9" ry="5"/><ellipse cx="320" cy="85" rx="9" ry="5"/>
+    <ellipse cx="340" cy="140" rx="9" ry="5"/><ellipse cx="300" cy="190" rx="9" ry="5"/>
+  </g>
+  <text x="200" y="200" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="800" fill="#2c4a6e">Chawal ka Atta</text>
+  <text x="200" y="232" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#4a6a8e">Fine Rice Flour</text>
+</svg>
