@@ -1,15 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Bajre ka Atta">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Bajre ka Atta (pearl millet flour)">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f6f0e0"/>
-      <stop offset="1" stop-color="#d8c48a"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f2e2"/><stop offset="1" stop-color="#d9c68e"/>
+    </linearGradient>
+    <linearGradient id="bag" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eee4c6"/><stop offset="1" stop-color="#c2a758"/>
     </linearGradient>
   </defs>
   <rect width="400" height="300" fill="url(#bg)"/>
-  <g fill="#8a7024" opacity="0.85">
-    <circle cx="90" cy="90" r="6"/><circle cx="122" cy="128" r="5"/><circle cx="70" cy="158" r="7"/>
-    <circle cx="320" cy="82" r="5"/><circle cx="340" cy="138" r="6"/><circle cx="300" cy="188" r="5"/>
+  <path d="M135 95 h130 l14 150 a12 12 0 0 1 -12 13 h-134 a12 12 0 0 1 -12 -13 z" fill="url(#bag)" stroke="#9c8134" stroke-width="3"/>
+  <path d="M135 95 q65 -30 130 0" fill="none" stroke="#9c8134" stroke-width="3"/>
+  <rect x="150" y="150" width="100" height="58" rx="8" fill="#fdfaf0" stroke="#9c8134" stroke-width="2"/>
+  <text x="200" y="184" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="21" font-weight="800" fill="#5f4c14">BAJRA</text>
+  <text x="200" y="202" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="13" fill="#9c8134">ka atta</text>
+  <g transform="translate(322,110)" stroke="#9c8134" stroke-width="3" fill="#e0cb84">
+    <path d="M0 40 v-46"/>
+    <circle cx="0" cy="-6" r="6"/><circle cx="-11" cy="4" r="6"/><circle cx="11" cy="4" r="6"/>
+    <circle cx="-11" cy="20" r="6"/><circle cx="11" cy="20" r="6"/><circle cx="0" cy="30" r="6"/>
   </g>
-  <text x="200" y="200" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="36" font-weight="800" fill="#5f4c14">Bajre ka Atta</text>
-  <text x="200" y="232" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="17" fill="#7a6422">Pearl Millet Flour</text>
 </svg>
