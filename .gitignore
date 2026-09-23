@@ -4,8 +4,15 @@ node_modules/
 # Environment (never commit real credentials)
 .env
 
-# Order data (local)
+# Order data (local database)
+server/data/*.db
+server/data/*.db-wal
+server/data/*.db-shm
 server/data/orders.json
+
+# Temp
+_out.txt
+_err.txt
 
 # OS / editor
 .DS_Store

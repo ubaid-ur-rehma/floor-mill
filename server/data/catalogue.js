@@ -19,14 +19,6 @@ export const SHOP = {
 export const PAYMENT_ACCOUNTS = {
     easypaisa: { label: "Easypaisa", number: "0316 4395007", holder: "Nazir Atta Chakki" },
     jazzcash: { label: "JazzCash", number: "0316 4395007", holder: "Nazir Atta Chakki" },
-    bank: {
-        label: "Bank Transfer",
-        bankName: "Meezan Bank",
-        accountTitle: "Nazir Atta Chakki",
-        accountNumber: "PK00MEZN0000",
-        iban: "PK00MEZN0000",
-    },
-    cod: { label: "Cash on Delivery", note: "Pay in cash when you collect your order." },
 };
 
 export const PRODUCTS = [
@@ -34,7 +26,7 @@ export const PRODUCTS = [
         id: "desi-gandum-atta",
         name: "Desi Gandum ke Atta",
         description: "Stone-ground whole wheat flour, milled fresh every day for authentic taste and nutrition.",
-        price: 170,
+        price: 180,
         unit: "kg",
         image: "atta2.jpeg",
         tag: "Bestseller",
@@ -55,7 +47,7 @@ export const PRODUCTS = [
         id: "white-atta",
         name: "White Atta",
         description: "Finely milled white flour for soft rotis, naan and baking. Clean and fresh.",
-        price: 160,
+        price: 180,
         unit: "kg",
         image: "atta4.jpeg",
         tag: "Daily",

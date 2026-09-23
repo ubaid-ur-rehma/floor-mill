@@ -109,8 +109,6 @@ function renderPayChoices() {
     const opts = [
         { id: "easypaisa", icon: "fa-mobile-screen-button", color: "#00a651", label: "Easypaisa", sub: "Pay from your Easypaisa mobile account" },
         { id: "jazzcash", icon: "fa-wallet", color: "#e4002b", label: "JazzCash", sub: "Pay from your JazzCash mobile wallet" },
-        { id: "bank", icon: "fa-building-columns", color: "#1f4e79", label: "Bank Transfer", sub: "Transfer to our bank account" },
-        { id: "cod", icon: "fa-hand-holding-dollar", color: "#b8860b", label: "Cash on Delivery", sub: "Pay cash when you collect your order" },
     ];
     el.innerHTML = "";
     opts.forEach((o) => {
@@ -176,25 +174,7 @@ async function placeOrder() {
         if (!payRes.ok) throw new Error(payData.error || "Could not start payment.");
         const session = payData.session;
 
-        // 3a. COD / bank: order is placed, payment settles later.
-        if (session.nextAction === "none") {
-            setStatus(
-                `✅ <strong>Order ${order.id} placed!</strong><br>Total: ${money(order.total)} — pay cash when you collect. ` +
-                `We will call you on ${phone} to confirm.`, "ok");
-            btn.disabled = false;
-            return;
-        }
-        if (session.nextAction === "bank_transfer") {
-            const b = session.account;
-            setStatus(
-                `✅ <strong>Order ${order.id} placed!</strong><br>Please transfer ${money(order.total)} to:<br>` +
-                `<strong>${b.bankName}</strong><br>Title: ${b.accountTitle}<br>Account: ${b.accountNumber}<br>` +
-                `Then send the receipt on WhatsApp to confirm.`, "ok");
-            btn.disabled = false;
-            return;
-        }
-
-        // 3b. Wallet / card: confirm the (sandbox) payment.
+        // 3. Confirm the (sandbox) payment.
         setStatus(`Order ${order.id} created. Processing payment via ${session.method}…`, "ok");
         const confirmRes = await fetch(`${API}/api/payments/${session.sessionId}/confirm`, {
             method: "POST",

@@ -10,8 +10,8 @@
 //   GET  /api/orders/:id               fetch an order
 //   POST /api/orders/:id/pay           start a payment    -> { sessionId, nextAction }
 //   POST /api/payments/:session/confirm confirm payment   -> { status }
-//   POST /api/orders/:id/reference     attach a bank/wallet txn reference
 //
+// Data is stored in a real SQLite database (server/db.js).
 // Run:  npm start        (http://localhost:3000)
 // ============================================================================
 
@@ -20,7 +20,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { SHOP, PAYMENT_ACCOUNTS, PRODUCTS, findProduct } from "./data/catalogue.js";
-import { orderStore } from "./orders.js";
+import { orderStore } from "./db.js";
 import {
     METHODS,
     isMethodValid,
@@ -105,7 +105,6 @@ app.post("/api/orders", (req, res) => {
         delivery,
         total,
         currency: SHOP.currency,
-        paymentStatus: "unpaid",
     });
 
     res.status(201).json({ order });
@@ -137,7 +136,7 @@ app.post("/api/orders/:id/pay", (req, res) => {
         currency: order.currency,
     });
 
-    orderStore.update(order.id, { paymentMethod: method, paymentStatus: "pending", paymentSessionId: session.sessionId });
+    orderStore.update(order.id, { paymentMethod: method, paymentStatus: "pending" });
 
     res.json({ session });
 });
@@ -153,26 +152,10 @@ app.post("/api/payments/:sessionId/confirm", (req, res) => {
     orderStore.update(result.orderId, {
         paymentStatus: "paid",
         status: "confirmed",
-        paymentTxnRef: result.txnRef,
     });
 
     const order = orderStore.get(result.orderId);
     res.json({ ok: true, txnRef: result.txnRef, order });
-});
-
-/** Attach a manual transaction reference (bank transfer / wallet screenshot). */
-app.post("/api/orders/:id/reference", (req, res) => {
-    const order = orderStore.get(req.params.id);
-    if (!order) return res.status(404).json({ error: "Order not found." });
-
-    const ref = (req.body?.reference || "").trim();
-    if (!ref) return res.status(400).json({ error: "reference is required." });
-
-    const updated = orderStore.update(order.id, {
-        paymentReference: ref,
-        paymentStatus: "awaiting_verification",
-    });
-    res.json({ order: updated });
 });
 
 // ------------------------------------------------------------ Static hosting

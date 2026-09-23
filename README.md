@@ -15,10 +15,10 @@ by food brands.
 - `style.css`, `checkout.js`
 
 **Back end (`server/`)**
-- `server/server.js` — Express server: static hosting + REST API
+- `server/server.js` — Express server: static hosting + REST API + CORS
 - `server/data/catalogue.js` — products, prices, shop info, payment accounts
-- `server/orders.js` — order storage (JSON file, persists to disk)
-- `server/payments.js` — payment engine (Easypaisa / JazzCash / Bank / COD)
+- `server/db.js` — **real SQLite database** (orders, order_items, payments tables)
+- `server/payments.js` — payment engine (**Easypaisa & JazzCash only**)
 
 ## Run it
 
@@ -37,7 +37,7 @@ Then open **http://localhost:3000**
 | GET | `/api/products` | product catalogue |
 | POST | `/api/orders` | create an order |
 | GET | `/api/orders/:id` | fetch one order |
-| POST | `/api/orders/:id/pay` | start a payment |
+| POST | `/api/orders/:id/pay` | start a payment (Easypaisa / JazzCash) |
 | POST | `/api/payments/:session/confirm` | confirm a payment |
 | POST | `/api/orders/:id/reference` | attach a bank/wallet reference |
 
