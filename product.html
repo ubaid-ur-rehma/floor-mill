@@ -171,6 +171,19 @@
             var grid = document.getElementById("productsGrid");
             var list = document.getElementById("priceList");
 
+            // Built-in products so the site works fully on GitHub Pages (no backend).
+            var PRODUCTS = [
+                { name: "Desi Gandum ke Atta", price: 180, unit: "kg", image: "atta2.jpeg", tag: "Bestseller", category: "Atta", description: "Whole-wheat desi atta, traditionally ground for a rich, natural taste and full nutrition." },
+                { name: "Narala Supreme Chawal", price: 415, priceMax: 430, unit: "kg", image: "atta3.jpeg", tag: "Premium", category: "Rice", description: "Premium long-grain rice with a delicate aroma \u2014 perfect for biryani and everyday meals." },
+                { name: "White Atta", price: 180, unit: "kg", image: "atta4.jpeg", tag: "Daily", category: "Atta", description: "Fine, soft white atta that gives perfect rotis, naan and bakery at home." },
+                { name: "Makai ka Atta", price: 210, unit: "kg", image: "img/makai-atta.svg", tag: "Fresh", category: "Atta", description: "Fresh ground corn (maize) flour \u2014 perfect for makai ki roti and traditional dishes." },
+                { name: "Jo ka Atta", price: 280, unit: "kg", image: "img/jo-atta.svg", tag: "Healthy", category: "Atta", description: "Wholesome barley (jo) flour, rich in fibre \u2014 healthy and traditionally ground." },
+                { name: "Chawal ka Atta", price: 300, unit: "kg", image: "img/chawal-atta.svg", tag: "Special", category: "Flour", description: "Fine rice flour (chawal ka atta) for baking, traditional sweets and crispy snacks." },
+                { name: "Gandum ka Dalia", price: 220, unit: "kg", image: "img/gandum-dalia.svg", tag: "Healthy", category: "Dalia", description: "Coarse-ground cracked wheat dalia \u2014 a wholesome, fibre-rich breakfast choice." },
+                { name: "Jo ka Dalia", price: 360, unit: "kg", image: "img/jo-dalia.svg", tag: "Premium", category: "Dalia", description: "Cracked barley dalia, full of fibre and nutrition \u2014 traditionally ground and pure." },
+                { name: "Bajre ka Atta", price: 200, unit: "kg", image: "img/bajra-atta.svg", tag: "Winter Favourite", category: "Atta", description: "Pearl millet (bajra) flour \u2014 a healthy, warming choice for bajra roti in winter." },
+            ];
+
             function priceText(p) {
                 return (p.priceMax && p.priceMax !== p.price)
                     ? "Rs " + p.price + "\u2013" + p.priceMax
@@ -204,22 +217,23 @@
                     '</div></div></div>';
             }
 
-            fetch(API + "/api/products")
-                .then(function (r) { return r.json(); })
-                .then(function (data) {
-                    var products = data.products || [];
-                    if (!products.length) {
-                        grid.innerHTML = "<p class='loading-note'>No products available right now.</p>";
-                        list.innerHTML = "";
-                        return;
-                    }
-                    grid.innerHTML = products.map(card).join("");
-                    list.innerHTML = products.map(row).join("");
-                })
-                .catch(function () {
-                    grid.innerHTML = "<p class='loading-note'>Could not load products. Please refresh, or order on WhatsApp.</p>";
-                    list.innerHTML = "";
-                });
+            function render(products) {
+                grid.innerHTML = products.map(card).join("");
+                list.innerHTML = products.map(row).join("");
+            }
+
+            // Show the built-in products immediately (works on GitHub Pages).
+            render(PRODUCTS);
+
+            // If a backend is configured, refresh from it (keep built-ins on error).
+            if (API) {
+                fetch(API + "/api/products")
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data && data.products && data.products.length) { render(data.products); }
+                    })
+                    .catch(function () { /* keep the built-in products */ });
+            }
         })();
     </script>
 </body>
