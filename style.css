@@ -2117,4 +2117,507 @@ footer {
     }
     .reveal { opacity: 1; transform: none; }
     .reveal-stagger > * { opacity: 1; }
+}/* ==========================================================================
+   3D ANIMATIONS & EXTRA FUNCTIONALITY
+   ========================================================================== */
+
+/* ---- Perspective context for 3D children ---- */
+.products-grid {
+    perspective: 1400px;
+}
+
+/* ---- 3D tilt cards (JS drives --rx / --ry) ---- */
+.tilt-3d {
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+    transition: transform 0.18s ease-out, box-shadow 0.3s ease;
+    will-change: transform;
+}
+
+.tilt-3d .thumb,
+.tilt-3d .body {
+    transform: translateZ(28px);
+}
+
+.tilt-3d .tag {
+    transform: translateZ(48px);
+}
+
+/* ---- Hero title: subtle 3D pop-in ---- */
+.hero h1 {
+    animation: hero3dIn 1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    transform-style: preserve-3d;
+}
+
+@keyframes hero3dIn {
+    from {
+        opacity: 0;
+        transform: perspective(800px) rotateX(28deg) translateY(50px) scale(0.94);
+    }
+    to {
+        opacity: 1;
+        transform: perspective(800px) rotateX(0) translateY(0) scale(1);
+    }
+}
+
+.hero .hero-eyebrow {
+    animation: hero3dIn 0.9s 0.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.hero .hero-sub {
+    animation: hero3dIn 0.9s 0.25s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.hero .hero-actions,
+.hero .hero-stats {
+    animation: hero3dIn 0.9s 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* ---- Floating 3D grain emojis in the hero (decorative) ---- */
+.grain-3d {
+    position: absolute;
+    font-size: clamp(28px, 6vw, 56px);
+    opacity: 0.9;
+    pointer-events: none;
+    animation: float3d 9s ease-in-out infinite;
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
+    z-index: 1;
+}
+
+.grain-3d.g1 { top: 16%; left: 8%; animation-delay: 0s; }
+.grain-3d.g2 { top: 26%; right: 10%; animation-delay: 1.5s; font-size: clamp(24px, 5vw, 46px); }
+.grain-3d.g3 { bottom: 20%; left: 16%; animation-delay: 3s; font-size: clamp(20px, 4vw, 40px); }
+.grain-3d.g4 { bottom: 26%; right: 18%; animation-delay: 4.5s; }
+
+@keyframes float3d {
+    0%, 100% { transform: translateY(0) rotateY(0deg) rotateZ(0deg) scale(1); }
+    25% { transform: translateY(-18px) rotateY(35deg) rotateZ(6deg) scale(1.06); }
+    50% { transform: translateY(-6px) rotateY(0deg) rotateZ(-4deg) scale(1); }
+    75% { transform: translateY(-24px) rotateY(-35deg) rotateZ(4deg) scale(1.04); }
+}
+
+/* ---- Scroll progress bar ---- */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--terracotta), var(--leaf));
+    z-index: 999;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 12px rgba(224, 166, 39, 0.6);
+}
+
+/* ---- Animated stat counters ---- */
+.stat .num[data-count] {
+    display: inline-block;
+}
+
+/* ---- Back to top button (3D) ---- */
+.back-top {
+    position: fixed;
+    bottom: 96px;
+    right: 22px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--brand), var(--brand-light));
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 26px rgba(63, 37, 17, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(0.8);
+    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    z-index: 400;
+}
+
+.back-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.back-top:hover {
+    background: var(--grad-gold);
+    color: var(--brand-dark);
+    transform: translateY(-4px) rotate(-8deg) scale(1.08);
+}
+
+/* ---- Section headings: 3D underline sweep ---- */
+.section-head h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.section-head h2::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    width: 0;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--grad-gold);
+    transform: translateX(-50%);
+    transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.section-head.visible h2::after,
+.section-head:hover h2::after {
+    width: 64%;
+}
+
+/* ---- USP cards: 3D flip on hover ---- */
+.usp {
+    transform-style: preserve-3d;
+}
+
+.usp:hover {
+    transform: translateY(-8px) rotateX(6deg) rotateY(-4deg);
+    box-shadow: 0 22px 46px rgba(107, 63, 29, 0.2);
+}
+
+/* ---- Pay method cards: 3D pop ---- */
+.pay-method:hover {
+    transform: translateY(-8px) rotateX(4deg);
+    box-shadow: 0 24px 50px rgba(107, 63, 29, 0.22);
+}
+
+/* ---- Menu items: slide-in 3D ---- */
+.menu-item:hover {
+    transform: translateY(-6px) translateZ(0) rotateY(2deg);
+    box-shadow: 0 20px 44px rgba(107, 63, 29, 0.18);
+}
+
+/* ---- Buttons: 3D press ---- */
+.btn:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+/* ---- Counter band ---- */
+.counter-band {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 22px;
+    max-width: var(--maxw);
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+.counter-band .cb {
+    text-align: center;
+    background: linear-gradient(160deg, #ffffff, #fdf6e6);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 16px;
+    box-shadow: var(--shadow-sm);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.counter-band .cb:hover {
+    transform: translateY(-8px) rotateX(6deg);
+    box-shadow: var(--shadow-md);
+}
+
+.counter-band .cb .cb-num {
+    display: block;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 800;
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.1;
+}
+
+.counter-band .cb .cb-lbl {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+    display: block;
+}
+
+/* ---- Mobile: keep animations light ---- */
+@media (max-width: 768px) {
+    .grain-3d { display: none; }
+    .tilt-3d { transform: none !important; }
+    .back-top { bottom: 84px; right: 16px; width: 44px; height: 44px; }
+}/* ==========================================================================
+   ADVANCED 3D — WebGL hero canvas + layered depth
+   ========================================================================== */
+
+/* Hero becomes the 3D stage */
+.hero {
+    position: relative;
+    min-height: clamp(560px, 82vh, 820px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* WebGL canvas fills the hero, sits behind the text */
+#hero3d {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Text floats above the 3D scene */
+.hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--maxw);
+    padding: 0 20px;
+    transform-style: preserve-3d;
+}
+
+.hero-content h1 {
+    text-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+}
+
+.hero-content .hero-sub {
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* Soft vignette so text stays readable over the 3D scene */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 45%, rgba(40, 23, 10, 0.15), rgba(40, 23, 10, 0.62) 85%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ---- Magnetic 3D buttons (JS drives --mx/--my) ---- */
+.magnetic {
+    transform: translate3d(var(--mx, 0), var(--my, 0), 0);
+    transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---- 3D rotating product showcase ---- */
+/* Full-bleed stage so the 3D ring is never clipped by the page container. */
+.showcase {
+    perspective: 1600px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 70px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.showcase-stage {
+    position: relative;
+    height: 460px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    /* Extra elbow-room for the ring's front card + its reflection */
+    margin: 0 auto;
+    overflow: visible;
+}
+
+.showcase-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 220px;
+    height: 280px;
+    margin: -140px 0 0 -110px;
+    transform-style: preserve-3d;
+    animation: ringSpin 26s linear infinite;
+}
+
+.showcase-ring.paused {
+    animation-play-state: paused;
+}
+
+.showcase-face {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 24px 50px rgba(63, 37, 17, 0.25);
+    overflow: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.showcase-face img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.showcase-face .sf-body {
+    padding: 14px;
+    text-align: center;
+}
+
+.showcase-face .sf-body h4 {
+    font-size: 16px;
+    color: var(--brand-dark);
+    margin-bottom: 4px;
+}
+
+.showcase-face .sf-body span {
+    color: var(--brand);
+    font-weight: 800;
+    font-size: 15px;
+}
+
+@keyframes ringSpin {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+/* ---- 3D flip cards ---- */
+.flip-card {
+    perspective: 1200px;
+    height: 260px;
+}
+
+.flip-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+}
+
+.flip-front {
+    background: linear-gradient(160deg, #ffffff, #fdf6e6);
+    border: 1px solid var(--line);
+}
+
+.flip-back {
+    background: var(--grad-warm);
+    color: #fff;
+    transform: rotateY(180deg);
+}
+
+.flip-front i {
+    font-size: 40px;
+    color: var(--accent-dark);
+    margin-bottom: 14px;
+}
+
+.flip-front h4 {
+    font-size: 20px;
+    color: var(--brand-dark);
+}
+
+.flip-back h4 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.flip-back p {
+    color: #f0e0c8;
+    font-size: 14.5px;
+}
+
+/* ---- Scroll parallax depth ---- */
+.parallax {
+    will-change: transform;
+}
+
+/* ---- Mobile: keep it fast ---- */
+@media (max-width: 768px) {
+    .hero {
+        min-height: auto;
+    }
+    #hero3d {
+        opacity: 0.65;
+    }
+    .showcase-stage {
+        height: 360px;
+    }
+    .showcase-ring {
+        animation-duration: 34s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .showcase-ring { animation: none; }
+}/* ==========================================================================
+   3D SHOWCASE — final fit & polish
+   ========================================================================== */
+
+/* The section that holds the showcase must not clip the rotating ring. */
+.section:has(.showcase) {
+    overflow: visible;
+}
+
+.showcase {
+    overflow: visible;
+}
+
+.showcase-stage {
+    overflow: visible;
+    /* Wide enough for the front card to sit centred with room to spin */
+    max-width: 100%;
+}
+
+/* Keep the front-facing card crisp; dim the ones turning away. */
+.showcase-face {
+    transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* A soft reflective floor under the carousel for depth. */
+.showcase-stage::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    width: 320px;
+    height: 34px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(63, 37, 17, 0.22), transparent 70%);
+    pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .showcase-stage {
+        height: 380px;
+    }
+    .showcase-face img {
+        height: 150px;
+    }
 }
