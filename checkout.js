@@ -168,6 +168,10 @@ function setStatus(msg, kind) {
 }
 
 // --------------------------------------------------------------- place order
+// Real manual payment flow:
+//   1. Customer pays in their JazzCash / Easypaisa app to the shop number.
+//   2. Customer uploads a screenshot of the payment.
+//   3. The order + screenshot are sent to the shop owner on WhatsApp.
 async function placeOrder() {
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
@@ -177,78 +181,94 @@ async function placeOrder() {
     const lines = cartLines();
     if (lines.length === 0) return setStatus("Please add at least one product to your order.", "error");
 
-    const btn = document.getElementById("placeOrderBtn");
-    btn.disabled = true;
-    setStatus("Creating your order…", "ok");
-
+    const total = lines.reduce((s, l) => s + l.lineTotal, 0);
     const methodLabel = state.method === "jazzcash" ? "JazzCash" : "Easypaisa";
+    const accountNo = (state.accounts[state.method] && state.accounts[state.method].number) || "0316 4395007";
 
-    // ---- No backend (e.g. GitHub Pages): confirm + hand off to WhatsApp ----
-    if (!state.hasBackend) {
-        const summary = lines.map((l) => `${l.qty} x ${l.name}`).join(", ");
-        const total = lines.reduce((s, l) => s + l.lineTotal, 0);
-        const waText = encodeURIComponent(
-            `ASSALAM-O-ALAIKUM, I want to pay by ${methodLabel}.\n\n` +
-            `Name: ${name}\nPhone: ${phone}\nOrder: ${summary}\nTotal: Rs ${total}` +
-            (note ? `\nNote: ${note}` : "")
-        );
-        setStatus(
-            `\u2705 <strong>Order ready \u2014 pay by ${methodLabel}</strong><br>` +
-            `Send ${methodLabel} payment to <strong>0316 4395007</strong><br>` +
-            `Total: ${money(total)}<br><br>` +
-            `<a href="https://wa.me/923297466292?text=${waText}" target="_blank" rel="noopener" class="btn btn-green" style="margin-top:6px;">` +
-            `<i class="fa-brands fa-whatsapp"></i> Confirm on WhatsApp</a>`,
-            "ok");
-        btn.disabled = false;
-        return;
+    // Build the order summary text used in WhatsApp.
+    const summary = lines.map((l) => `${l.qty} x ${l.name} (${money(l.lineTotal)})`).join("\n");
+
+    // If a backend is available, create the order there too (real DB record).
+    let orderId = null;
+    if (state.hasBackend) {
+        try {
+            const orderRes = await fetch(`${API}/api/orders`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    customer: { name, phone, email: null },
+                    items: lines.map((l) => ({ id: l.id, qty: l.qty })),
+                    paymentMethod: state.method,
+                    note,
+                }),
+            });
+            const orderData = await orderRes.json();
+            if (orderRes.ok && orderData.order) {
+                orderId = orderData.order.id;
+                state.lastOrder = orderData.order;
+            }
+        } catch (e) { /* continue without an order id */ }
     }
 
-    try {
-        // 1. Create order
-        const orderRes = await fetch(`${API}/api/orders`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                customer: { name, phone, email: null },
-                items: lines.map((l) => ({ id: l.id, qty: l.qty })),
-                paymentMethod: state.method,
-                note,
-            }),
-        });
-        const orderData = await orderRes.json();
-        if (!orderRes.ok) throw new Error(orderData.error || "Could not create order.");
-        const order = orderData.order;
-        state.lastOrder = order;
+    const shortId = orderId || ("NAC-" + Math.floor(1000 + Math.random() * 9000));
 
-        // 2. Start payment
-        const payRes = await fetch(`${API}/api/orders/${order.id}/pay`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ method: state.method }),
-        });
-        const payData = await payRes.json();
-        if (!payRes.ok) throw new Error(payData.error || "Could not start payment.");
-        const session = payData.session;
+    // Show the real payment step: pay in the app, then upload a screenshot.
+    showPaymentStep({ name, phone, note, total, methodLabel, accountNo, summary, shortId });
+}
 
-        // 3. Confirm the (sandbox) payment.
-        setStatus(`Order ${order.id} created. Processing payment via ${session.method}…`, "ok");
-        const confirmRes = await fetch(`${API}/api/payments/${session.sessionId}/confirm`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({}),
-        });
-        const confirmData = await confirmRes.json();
-        if (!confirmRes.ok) throw new Error(confirmData.error || "Payment confirmation failed.");
+function showPaymentStep({ name, phone, note, total, methodLabel, accountNo, summary, shortId }) {
+    const box = document.getElementById("statusBox");
+    box.className = "status-box show ok";
+    box.innerHTML =
+        `<div class="paystep">` +
+        `<h4><i class="fa-solid fa-mobile-screen-button"></i> Pay ${money(total)} by ${methodLabel}</h4>` +
+        `<ol class="paystep-steps">` +
+        `<li>Open your <strong>${methodLabel}</strong> app.</li>` +
+        `<li>Choose <strong>Send Money</strong> / <strong>Money Transfer</strong>.</li>` +
+        `<li>Send <strong>${money(total)}</strong> to:</li>` +
+        `</ol>` +
+        `<div class="paystep-account"><span>${methodLabel} Account</span><strong>${accountNo}</strong></div>` +
+        `<label class="paystep-upload" for="screenshotInput">` +
+        `<i class="fa-solid fa-camera"></i> Upload payment screenshot` +
+        `</label>` +
+        `<input type="file" id="screenshotInput" accept="image/*" hidden>` +
+        `<div id="shotPreview" class="paystep-preview"></div>` +
+        `<button type="button" id="sendWaBtn" class="btn btn-green" style="width:100%;justify-content:center;margin-top:12px;" disabled>` +
+        `<i class="fa-brands fa-whatsapp"></i> Send order + screenshot on WhatsApp` +
+        `</button>` +
+        `<p class="paystep-hint">After WhatsApp opens, please <strong>attach your screenshot</strong> and tap send. Your order ID is <strong>${shortId}</strong>.</p>` +
+        `</div>`;
 
-        setStatus(
-            `\u2705 <strong>Payment successful!</strong><br>Order <strong>${order.id}</strong><br>` +
-            `Paid: ${money(order.total)} via ${methodLabel}<br>Transaction: ${confirmData.txnRef}<br>` +
-            `Show this order ID when you collect.`, "ok");
-    } catch (err) {
-        setStatus("\u274c " + err.message, "error");
-    } finally {
-        btn.disabled = false;
-    }
+    const waText = encodeURIComponent(
+        `ASSALAM-O-ALAIKUM, I have paid by ${methodLabel}.\n\n` +
+        `Order ID: ${shortId}\n` +
+        `Name: ${name}\nPhone: ${phone}\n\n` +
+        `Items:\n${summary}\n\n` +
+        `Total: ${money(total)}\nPaid to ${methodLabel}: ${accountNo}` +
+        (note ? `\nNote: ${note}` : "") +
+        `\n\n(I am sending the payment screenshot now.)`
+    );
+    const waUrl = `https://wa.me/923297466292?text=${waText}`;
+
+    const input = document.getElementById("screenshotInput");
+    const preview = document.getElementById("shotPreview");
+    const sendBtn = document.getElementById("sendWaBtn");
+
+    sendBtn.addEventListener("click", function () {
+        window.open(waUrl, "_blank");
+    });
+
+    input.addEventListener("change", function () {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Payment screenshot"><span class="shot-ok"><i class="fa-solid fa-circle-check"></i> Screenshot attached</span>`;
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Send order + screenshot on WhatsApp';
+        };
+        reader.readAsDataURL(file);
+    });
 }
 
 document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
