@@ -53,8 +53,9 @@
                     <span>Since 1975 &middot; Lahore</span>
                 </span>
             </a>
-            <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleMenu()">&#9776;</button>
+            <button class="nav-toggle" aria-label="Open menu" onclick="toggleMenu()">&#9776;</button>
             <nav class="main-nav" id="mainNav">
+                <button class="nav-close" aria-label="Close menu" onclick="closeMenu()">&times;</button>
                 <a href="index.html" class="active">Home</a>
                 <a href="product.html">Products</a>
                 <a href="payment.html">Payment</a>
@@ -65,9 +66,20 @@
             </nav>
         </header>
 
+        <!-- Backdrop for the mobile menu -->
+        <div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
+
         <script>
             function toggleMenu() {
-                document.getElementById('mainNav').classList.toggle('open');
+                var nav = document.getElementById('mainNav');
+                var backdrop = document.getElementById('navBackdrop');
+                nav.classList.toggle('open');
+                if (backdrop) backdrop.classList.toggle('open', nav.classList.contains('open'));
+            }
+            function closeMenu() {
+                document.getElementById('mainNav').classList.remove('open');
+                var backdrop = document.getElementById('navBackdrop');
+                if (backdrop) backdrop.classList.remove('open');
             }
         </script>
 
@@ -366,9 +378,9 @@
                 <p id="payModalText"></p>
                 <div class="pay-modal__account" id="payModalAccount"></div>
                 <div class="pay-modal__actions">
-                    <a href="checkout.html" class="btn"><i class="fa-solid fa-arrow-right"></i> Order Now</a>
+                    <a href="checkout.html" id="payModalOrderBtn" class="btn"><i class="fa-solid fa-arrow-right"></i> Continue to Pay</a>
                     <a href="https://wa.me/923297466292" target="_blank" rel="noopener" class="btn btn-green"><i
-                            class="fa-brands fa-whatsapp"></i> Ask on WhatsApp</a>
+                            class="fa-brands fa-whatsapp"></i> Order on WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -401,6 +413,7 @@
                 var titleEl = document.getElementById("payModalTitle");
                 var textEl = document.getElementById("payModalText");
                 var acctEl = document.getElementById("payModalAccount");
+                var orderBtn = document.getElementById("payModalOrderBtn");
 
                 function openModal(key) {
                     var info = payInfo[key];
@@ -410,6 +423,8 @@
                     titleEl.textContent = info.title;
                     textEl.innerHTML = info.text + '<br><br><strong style="color:var(--brand-dark)">How to pay:</strong><br>' + info.steps;
                     acctEl.innerHTML = '<span class="acc-label">' + info.label + '</span><span class="acc-value">' + info.account + '</span>';
+                    // "Pay with X" continues to checkout with this method pre-selected.
+                    if (orderBtn) orderBtn.setAttribute("href", "checkout.html?method=" + key);
                     modal.classList.add("open");
                     modal.setAttribute("aria-hidden", "false");
                     document.body.style.overflow = "hidden";
@@ -432,6 +447,29 @@
                 document.addEventListener("keydown", function (e) {
                     if (e.key === "Escape") closeModal();
                 });
+            })();
+        </script>
+        <!-- ===== Scroll reveal animations ===== -->
+        <script>
+            (function () {
+                var items = document.querySelectorAll('.section-head, .usp-strip, .products-grid, .promo-banner, .split, .testimonials, .accepted-strip, .trust-bar, .pay-methods, .pay-flow, .cta-band');
+                items.forEach(function (el) { el.classList.add('reveal'); });
+                var grids = document.querySelectorAll('.products-grid, .testimonials, .pay-methods, .usp-strip');
+                grids.forEach(function (el) { el.classList.add('reveal-stagger'); });
+
+                if (!('IntersectionObserver' in window)) {
+                    items.forEach(function (el) { el.classList.add('visible'); });
+                    return;
+                }
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('visible');
+                            io.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.12 });
+                items.forEach(function (el) { io.observe(el); });
             })();
         </script>
     </body>

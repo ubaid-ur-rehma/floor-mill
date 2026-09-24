@@ -241,6 +241,7 @@
         </a>
         <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleMenu()">&#9776;</button>
         <nav class="main-nav" id="mainNav">
+            <button class="nav-close" aria-label="Close menu" onclick="closeMenu()">&times;</button>
             <a href="index.html">Home</a>
             <a href="product.html">Products</a>
             <a href="payment.html">Payment</a>
@@ -250,10 +251,20 @@
             <a href="checkout.html" class="active">Checkout</a>
         </nav>
     </header>
+    <!-- Backdrop for the mobile menu -->
+    <div class="nav-backdrop" id="navBackdrop" onclick="closeMenu()"></div>
 
     <script>
         function toggleMenu() {
-            document.getElementById('mainNav').classList.toggle('open');
+            var nav = document.getElementById('mainNav');
+            var backdrop = document.getElementById('navBackdrop');
+            nav.classList.toggle('open');
+            if (backdrop) backdrop.classList.toggle('open', nav.classList.contains('open'));
+        }
+        function closeMenu() {
+            document.getElementById('mainNav').classList.remove('open');
+            var backdrop = document.getElementById('navBackdrop');
+            if (backdrop) backdrop.classList.remove('open');
         }
     </script>
 

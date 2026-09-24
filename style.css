@@ -9,6 +9,11 @@
     --brand-light: #8a5a2b;
     --accent: #e0a627;
     --accent-dark: #b8860b;
+    --gold-2: #f6c453;
+    --terracotta: #c1440e;
+    --leaf: #4c8f2f;
+    --leaf-2: #7bc142;
+    --berry: #8e2a3a;
     --ink: #1d1a17;
     --muted: #6b6259;
     --bg: #faf7f2;
@@ -21,6 +26,9 @@
     --shadow-sm: 0 2px 12px rgba(63, 37, 17, 0.07);
     --shadow-md: 0 14px 40px rgba(63, 37, 17, 0.13);
     --shadow-lg: 0 24px 60px rgba(63, 37, 17, 0.18);
+    --grad-warm: linear-gradient(120deg, #6b3f1d 0%, #8a5a2b 55%, #b8860b 100%);
+    --grad-gold: linear-gradient(120deg, #e0a627 0%, #f6c453 100%);
+    --grad-leaf: linear-gradient(120deg, #4c8f2f 0%, #7bc142 100%);
     --maxw: 1200px;
 }
 
@@ -1401,17 +1409,29 @@ footer .copyright {
         flex-direction: column;
         align-items: stretch;
         background: var(--brand-dark);
-        padding: 84px 22px;
+        padding: 76px 22px 30px;
         gap: 8px;
         transform: translateX(100%);
         transition: transform 0.35s ease;
         box-shadow: var(--shadow-lg);
         visibility: hidden;
+        z-index: 300;
+        overflow-y: auto;
     }
 
     .main-nav.open {
         transform: translateX(0);
         visibility: visible;
+    }
+
+    /* Close (X) button inside the mobile menu */
+    .nav-close {
+        display: flex;
+    }
+
+    /* Dark backdrop behind the menu */
+    .nav-backdrop {
+        display: block;
     }
 
     .main-nav a {
@@ -1423,6 +1443,56 @@ footer .copyright {
         justify-content: center;
         text-align: center;
     }
+}
+
+/* Close button + backdrop base styling (desktop hides them via media query below) */
+.nav-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+/* Hidden on desktop screens */
+@media (min-width: 821px) {
+    .nav-close,
+    .nav-backdrop {
+        display: none;
+    }
+}
+
+.nav-close:hover {
+    background: var(--accent);
+    color: var(--brand-dark);
+    transform: rotate(90deg);
+}
+
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 11, 4, 0.55);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    z-index: 250;
+}
+
+.nav-backdrop.open {
+    opacity: 1;
+    visibility: visible;
 }
 
 @media (max-width: 600px) {
@@ -1846,4 +1916,205 @@ iframe {
 
 .product-card .body p {
     flex: 1;
+}/* ==========================================================================
+   PROFESSIONAL POLISH — animations, gradients, richer colour (appended last)
+   ========================================================================== */
+
+/* ---- Global smooth transitions ---- */
+a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pay-card {
+    transition: all 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---- Gradient header + accent bar ---- */
+.site-header {
+    background: linear-gradient(120deg, #3f2511 0%, #5a3418 60%, #6b3f1d 100%);
+}
+
+.site-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--terracotta), var(--leaf), var(--accent));
+    background-size: 300% 100%;
+    animation: slideGradient 8s linear infinite;
+}
+
+@keyframes slideGradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+/* ---- Hero: animated gradient wash + floating glow ---- */
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(224, 166, 39, 0.20), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(76, 143, 47, 0.16), transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(193, 68, 14, 0.15), transparent 50%);
+    animation: heroGlow 12s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes heroGlow {
+    0% { transform: scale(1) translateY(0); opacity: 0.9; }
+    100% { transform: scale(1.15) translateY(-14px); opacity: 1; }
+}
+
+/* ---- Buttons: shine sweep on hover ---- */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+}
+
+.btn:hover::after {
+    left: 130%;
+}
+
+/* ---- Card hover lift + coloured glow ---- */
+.product-card:hover {
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: 0 26px 55px rgba(107, 63, 29, 0.22);
+    border-color: var(--accent);
+}
+
+.product-card .tag {
+    background: var(--grad-gold);
+    animation: tagPop 0.5s ease both;
+}
+
+@keyframes tagPop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ---- USP icons: gentle float ---- */
+.usp:hover i {
+    animation: iconBob 0.8s ease infinite alternate;
+    color: var(--terracotta);
+}
+
+@keyframes iconBob {
+    from { transform: translateY(0); }
+    to { transform: translateY(-6px); }
+}
+
+/* ---- Section reveal on scroll ---- */
+.reveal {
+    opacity: 0;
+    transform: translateY(34px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger children for a professional cascade */
+.reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: none;
+}
+
+.reveal-stagger.visible > * {
+    animation: fadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.reveal-stagger.visible > *:nth-child(1) { animation-delay: 0.05s; }
+.reveal-stagger.visible > *:nth-child(2) { animation-delay: 0.15s; }
+.reveal-stagger.visible > *:nth-child(3) { animation-delay: 0.25s; }
+.reveal-stagger.visible > *:nth-child(4) { animation-delay: 0.35s; }
+.reveal-stagger.visible > *:nth-child(5) { animation-delay: 0.45s; }
+.reveal-stagger.visible > *:nth-child(6) { animation-delay: 0.55s; }
+.reveal-stagger.visible > *:nth-child(7) { animation-delay: 0.65s; }
+.reveal-stagger.visible > *:nth-child(8) { animation-delay: 0.75s; }
+.reveal-stagger.visible > *:nth-child(9) { animation-delay: 0.85s; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Colourful section headings ---- */
+.section-head .kicker {
+    background: var(--grad-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+}
+
+/* ---- Gradient promo banner ---- */
+.promo-banner .inner {
+    background: linear-gradient(120deg, #3f2511 0%, #6b3f1d 45%, #8a5a2b 100%);
+}
+
+/* ---- Payment logos: colour pop on hover ---- */
+.pay-logo:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 16px 34px rgba(107, 63, 29, 0.2);
+}
+
+/* ---- WhatsApp float: pulse ---- */
+.whatsapp-float {
+    animation: waPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes waPulse {
+    0%, 100% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45); }
+    50% { box-shadow: 0 8px 34px rgba(37, 211, 102, 0.8); transform: scale(1.06); }
+}
+
+/* ---- Trust badges: subtle colour per icon ---- */
+.trust-item:nth-child(1) i { background: #fdf3dd; color: var(--accent-dark); }
+.trust-item:nth-child(2) i { background: #eaf5e2; color: var(--leaf); }
+.trust-item:nth-child(3) i { background: #fdeae0; color: var(--terracotta); }
+
+/* ---- Footer: gradient + link hover slide ---- */
+footer {
+    background: linear-gradient(180deg, #3f2511 0%, #2c1909 100%);
+}
+
+.footer-links a {
+    position: relative;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.footer-links a:hover {
+    transform: translateX(4px);
+}
+
+/* ---- Respect reduced-motion preference ---- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    .reveal-stagger > * { opacity: 1; }
 }

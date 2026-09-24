@@ -14,12 +14,29 @@
 
 const API = (typeof window !== "undefined" && window.API_BASE_URL) || "";
 
+// Built-in products so checkout works on GitHub Pages (no backend).
+const FALLBACK_PRODUCTS = [
+    { id: "desi-gandum-atta", name: "Desi Gandum ke Atta", price: 180, unit: "kg", image: "atta2.jpeg" },
+    { id: "narala-supreme-chawal", name: "Narala Supreme Chawal", price: 415, unit: "kg", image: "atta3.jpeg" },
+    { id: "white-atta", name: "White Atta", price: 180, unit: "kg", image: "atta4.jpeg" },
+    { id: "makai-ka-atta", name: "Makai ka Atta", price: 210, unit: "kg", image: "img/makai-atta.svg" },
+    { id: "jo-ka-atta", name: "Jo ka Atta", price: 280, unit: "kg", image: "img/jo-atta.svg" },
+    { id: "chawal-ka-atta", name: "Chawal ka Atta", price: 300, unit: "kg", image: "img/chawal-atta.svg" },
+    { id: "gandum-ka-dalia", name: "Gandum ka Dalia", price: 220, unit: "kg", image: "img/gandum-dalia.svg" },
+    { id: "jo-ka-dalia", name: "Jo ka Dalia", price: 360, unit: "kg", image: "img/jo-dalia.svg" },
+    { id: "bajre-ka-atta", name: "Bajre ka Atta", price: 200, unit: "kg", image: "img/bajra-atta.svg" },
+];
+
 const state = {
     products: [],
-    accounts: {},
+    accounts: {
+        easypaisa: { label: "Easypaisa", number: "0316 4395007" },
+        jazzcash: { label: "JazzCash", number: "0316 4395007" },
+    },
     cart: {},        // { productId: qty }
     customer: { name: "", phone: "", note: "" },
-    method: "cod",
+    method: "easypaisa",
+    hasBackend: !!API,
     lastOrder: null,
 };
 
@@ -27,15 +44,32 @@ const money = (n) => "Rs " + Number(n).toLocaleString("en-PK");
 
 // --------------------------------------------------------------- load shop
 async function loadShop() {
-    const res = await fetch(`${API}/api/shop`);
-    const data = await res.json();
-    state.products = data.products;
-    state.accounts = data.paymentAccounts;
-    state.method = data.methods[0] || "cod";
+    // Pre-select method from ?method=jazzcash / ?method=easypaisa
+    const params = new URLSearchParams(location.search);
+    const wantMethod = params.get("method");
+    if (wantMethod === "jazzcash" || wantMethod === "easypaisa") state.method = wantMethod;
 
-    // Default the cart to 1 of the first product.
+    // Start with built-in products so the page always works.
+    state.products = FALLBACK_PRODUCTS;
     if (state.products[0]) state.cart[state.products[0].id] = 1;
+    renderCart();
+    renderPayChoices();
+    renderTotals();
 
+    // Try the API (upgrades products/accounts when a backend exists).
+    try {
+        const res = await fetch(`${API}/api/shop`);
+        const data = await res.json();
+        if (data && data.products && data.products.length) {
+            state.products = data.products;
+            state.accounts = data.paymentAccounts;
+            state.hasBackend = true;
+        }
+    } catch (e) { /* keep built-in products */ }
+
+    if (state.products[0] && Object.keys(state.cart).length === 0) {
+        state.cart[state.products[0].id] = 1;
+    }
     renderCart();
     renderPayChoices();
     renderTotals();
@@ -147,6 +181,28 @@ async function placeOrder() {
     btn.disabled = true;
     setStatus("Creating your order…", "ok");
 
+    const methodLabel = state.method === "jazzcash" ? "JazzCash" : "Easypaisa";
+
+    // ---- No backend (e.g. GitHub Pages): confirm + hand off to WhatsApp ----
+    if (!state.hasBackend) {
+        const summary = lines.map((l) => `${l.qty} x ${l.name}`).join(", ");
+        const total = lines.reduce((s, l) => s + l.lineTotal, 0);
+        const waText = encodeURIComponent(
+            `ASSALAM-O-ALAIKUM, I want to pay by ${methodLabel}.\n\n` +
+            `Name: ${name}\nPhone: ${phone}\nOrder: ${summary}\nTotal: Rs ${total}` +
+            (note ? `\nNote: ${note}` : "")
+        );
+        setStatus(
+            `\u2705 <strong>Order ready \u2014 pay by ${methodLabel}</strong><br>` +
+            `Send ${methodLabel} payment to <strong>0316 4395007</strong><br>` +
+            `Total: ${money(total)}<br><br>` +
+            `<a href="https://wa.me/923297466292?text=${waText}" target="_blank" rel="noopener" class="btn btn-green" style="margin-top:6px;">` +
+            `<i class="fa-brands fa-whatsapp"></i> Confirm on WhatsApp</a>`,
+            "ok");
+        btn.disabled = false;
+        return;
+    }
+
     try {
         // 1. Create order
         const orderRes = await fetch(`${API}/api/orders`, {
@@ -185,15 +241,15 @@ async function placeOrder() {
         if (!confirmRes.ok) throw new Error(confirmData.error || "Payment confirmation failed.");
 
         setStatus(
-            `✅ <strong>Payment successful!</strong><br>Order <strong>${order.id}</strong><br>` +
-            `Paid: ${money(order.total)} via ${session.method}<br>Transaction: ${confirmData.txnRef}<br>` +
+            `\u2705 <strong>Payment successful!</strong><br>Order <strong>${order.id}</strong><br>` +
+            `Paid: ${money(order.total)} via ${methodLabel}<br>Transaction: ${confirmData.txnRef}<br>` +
             `Show this order ID when you collect.`, "ok");
     } catch (err) {
-        setStatus("❌ " + err.message, "error");
+        setStatus("\u274c " + err.message, "error");
     } finally {
         btn.disabled = false;
     }
 }
 
 document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
-loadShop().catch((e) => setStatus("Could not connect to the server. Is it running? (" + e.message + ")", "error"));
+loadShop();
