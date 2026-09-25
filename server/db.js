@@ -73,6 +73,19 @@ db.exec(`
 
     CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
     CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id);
+
+    CREATE TABLE IF NOT EXISTS payment_notes (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id      TEXT NOT NULL,
+        method        TEXT,
+        reference     TEXT,
+        paid_amount   INTEGER,
+        customer_name TEXT,
+        created_at    TEXT NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_payment_notes_order ON payment_notes(order_id);
 `);
 
 // ---------------------------------------------------------------- ID helpers
@@ -140,6 +153,21 @@ export const orderStore = {
     list() {
         const orders = db.prepare(`SELECT * FROM orders ORDER BY created_at DESC`).all();
         return orders.map((o) => hydrate(o, db.prepare(`SELECT * FROM order_items WHERE order_id = ?`).all(o.id)));
+    },
+
+    /** Record a customer-declared wallet payment (manual JazzCash / Easypaisa). */
+    addPaymentNote(orderId, { method, reference, paidAmount, customerName }) {
+        db.prepare(`
+            INSERT INTO payment_notes (order_id, method, reference, paid_amount, customer_name, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `).run(orderId, method || null, reference || null,
+            paidAmount != null ? Number(paidAmount) : null,
+            customerName || null, new Date().toISOString());
+        return this.get(orderId);
+    },
+
+    notes(orderId) {
+        return db.prepare(`SELECT * FROM payment_notes WHERE order_id = ? ORDER BY rowid DESC`).all(orderId);
     },
 };
 

@@ -4,14 +4,14 @@
    ========================================================================== */
 
 :root {
-    --brand: #6b3f1d;
+    --brand: #040403;
     --brand-dark: #3f2511;
     --brand-light: #8a5a2b;
     --accent: #e0a627;
     --accent-dark: #b8860b;
     --gold-2: #f6c453;
     --terracotta: #c1440e;
-    --leaf: #4c8f2f;
+    --leaf: #4cfc00;
     --leaf-2: #7bc142;
     --berry: #8e2a3a;
     --ink: #1d1a17;
@@ -2619,5 +2619,61 @@ footer {
     }
     .showcase-face img {
         height: 150px;
+    }
+}/* ==========================================================================
+   PAGE BANNERS — 3D WebGL canvas layer
+   ========================================================================== */
+
+.page-banner,
+.payment-hero {
+    position: relative;
+    overflow: hidden;
+}
+
+/* The 3D canvas fills the banner, behind the text */
+.page-banner canvas[data-3d-scene],
+.payment-hero canvas[data-3d-scene] {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Keep banner text above the 3D scene */
+.page-banner > .crumb,
+.page-banner > h1,
+.page-banner > p,
+.payment-hero > h1,
+.payment-hero > p {
+    position: relative;
+    z-index: 2;
+}
+
+/* Soft vignette so the heading stays readable over the moving 3D shapes */
+.page-banner canvas[data-3d-scene]::after {
+    content: "";
+}
+
+.page-banner {
+    isolation: isolate;
+}
+
+.page-banner::after,
+.payment-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(40, 23, 10, 0.22), rgba(40, 23, 10, 0.5) 90%);
+}
+
+@media (max-width: 768px) {
+    .page-banner canvas[data-3d-scene],
+    .payment-hero canvas[data-3d-scene] {
+        opacity: 0.7;
     }
 }

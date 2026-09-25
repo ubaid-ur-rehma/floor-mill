@@ -227,35 +227,81 @@ function showPaymentStep({ name, phone, note, total, methodLabel, accountNo, sum
         `<li>Choose <strong>Send Money</strong> / <strong>Money Transfer</strong>.</li>` +
         `<li>Send <strong>${money(total)}</strong> to:</li>` +
         `</ol>` +
-        `<div class="paystep-account"><span>${methodLabel} Account</span><strong>${accountNo}</strong></div>` +
+        `<div class="paystep-account"><span>${methodLabel} Account</span><strong id="payAcct">${accountNo}</strong>` +
+        `<button type="button" class="copy-btn" id="copyAcct"><i class="fa-solid fa-copy"></i> Copy number</button></div>` +
         `<label class="paystep-upload" for="screenshotInput">` +
         `<i class="fa-solid fa-camera"></i> Upload payment screenshot` +
         `</label>` +
         `<input type="file" id="screenshotInput" accept="image/*" hidden>` +
         `<div id="shotPreview" class="paystep-preview"></div>` +
+        `<div class="form-row" style="margin-top:14px;text-align:left;">` +
+        `<label for="txnRef">Transaction ID from your app <span style="color:#c0392b">*</span></label>` +
+        `<input type="text" id="txnRef" placeholder="e.g. 12345678901 (the TID shown in your app)">` +
+        `</div>` +
         `<button type="button" id="sendWaBtn" class="btn btn-green" style="width:100%;justify-content:center;margin-top:12px;" disabled>` +
         `<i class="fa-brands fa-whatsapp"></i> Send order + screenshot on WhatsApp` +
         `</button>` +
-        `<p class="paystep-hint">After WhatsApp opens, please <strong>attach your screenshot</strong> and tap send. Your order ID is <strong>${shortId}</strong>.</p>` +
+        `<p class="paystep-hint">Enter the transaction ID and attach your screenshot, then send. Your order ID is <strong>${shortId}</strong>.</p>` +
         `</div>`;
-
-    const waText = encodeURIComponent(
-        `ASSALAM-O-ALAIKUM, I have paid by ${methodLabel}.\n\n` +
-        `Order ID: ${shortId}\n` +
-        `Name: ${name}\nPhone: ${phone}\n\n` +
-        `Items:\n${summary}\n\n` +
-        `Total: ${money(total)}\nPaid to ${methodLabel}: ${accountNo}` +
-        (note ? `\nNote: ${note}` : "") +
-        `\n\n(I am sending the payment screenshot now.)`
-    );
-    const waUrl = `https://wa.me/923297466292?text=${waText}`;
 
     const input = document.getElementById("screenshotInput");
     const preview = document.getElementById("shotPreview");
     const sendBtn = document.getElementById("sendWaBtn");
+    const txnInput = document.getElementById("txnRef");
+    const copyBtn = document.getElementById("copyAcct");
 
-    sendBtn.addEventListener("click", function () {
-        window.open(waUrl, "_blank");
+    // Copy the account number to the clipboard.
+    if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+            var txt = accountNo;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(txt).then(function () {
+                    copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+                    setTimeout(function () { copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy number'; }, 1600);
+                });
+            }
+        });
+    }
+
+    // Build the WhatsApp message fresh each time (includes the txn ID).
+    function waUrl() {
+        var ref = txnInput && txnInput.value.trim() ? txnInput.value.trim() : "(see screenshot)";
+        var text =
+            `ASSALAM-O-ALAIKUM, I have paid by ${methodLabel}.\n\n` +
+            `Order ID: ${shortId}\n` +
+            `Name: ${name}\nPhone: ${phone}\n\n` +
+            `Items:\n${summary}\n\n` +
+            `Total: ${money(total)}\n` +
+            `Paid to ${methodLabel}: ${accountNo}\n` +
+            `Transaction ID: ${ref}` +
+            (note ? `\nNote: ${note}` : "") +
+            `\n\n(I am sending the payment screenshot now.)`;
+        return `https://wa.me/923297466292?text=${encodeURIComponent(text)}`;
+    }
+
+    function refreshEnabled() {
+        var hasShot = input.files && input.files[0];
+        var hasRef = txnInput && txnInput.value.trim().length >= 4;
+        sendBtn.disabled = !(hasShot && hasRef);
+    }
+
+    sendBtn.addEventListener("click", async function () {
+        // Record the declared payment in the backend (real DB row) if available.
+        if (state.hasBackend && state.lastOrder) {
+            try {
+                await fetch(`${API}/api/orders/${state.lastOrder.id}/submit-payment`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        method: state.method,
+                        reference: txnInput.value.trim(),
+                        paidAmount: total,
+                        customerName: name,
+                    }),
+                });
+            } catch (e) { /* the WhatsApp message still goes through */ }
+        }
+        window.open(waUrl(), "_blank");
     });
 
     input.addEventListener("change", function () {
@@ -264,12 +310,16 @@ function showPaymentStep({ name, phone, note, total, methodLabel, accountNo, sum
         const reader = new FileReader();
         reader.onload = function (e) {
             preview.innerHTML = `<img src="${e.target.result}" alt="Payment screenshot"><span class="shot-ok"><i class="fa-solid fa-circle-check"></i> Screenshot attached</span>`;
-            sendBtn.disabled = false;
-            sendBtn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Send order + screenshot on WhatsApp';
+            refreshEnabled();
         };
         reader.readAsDataURL(file);
     });
+
+    if (txnInput) txnInput.addEventListener("input", refreshEnabled);
 }
+
+// --------------------------------------------------------------- payment note
+// (state.lastOrder is kept so the payment step can record it in the backend)
 
 document.getElementById("placeOrderBtn").addEventListener("click", placeOrder);
 loadShop();

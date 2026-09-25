@@ -158,6 +158,60 @@ app.post("/api/payments/:sessionId/confirm", (req, res) => {
     res.json({ ok: true, txnRef: result.txnRef, order });
 });
 
+/**
+ * Record a customer-declared wallet payment (manual JazzCash / Easypaisa).
+ * The customer pays in their app, then submits the transaction reference and
+ * (optionally) a note about the screenshot they will send on WhatsApp.
+ * The order is marked "awaiting_verification" until the owner confirms.
+ */
+app.post("/api/orders/:id/submit-payment", (req, res) => {
+    const order = orderStore.get(req.params.id);
+    if (!order) return res.status(404).json({ error: "Order not found." });
+
+    const { method, reference, paidAmount, customerName } = req.body || {};
+    if (!isMethodValid(method)) {
+        return res.status(400).json({ error: `method must be one of: ${METHODS.join(", ")}` });
+    }
+    if (!reference || String(reference).trim().length < 4) {
+        return res.status(400).json({ error: "A valid transaction ID / reference is required." });
+    }
+
+    const updated = orderStore.update(order.id, {
+        paymentMethod: method,
+        paymentStatus: "awaiting_verification",
+        status: "awaiting_payment_confirmation",
+    });
+
+    orderStore.addPaymentNote(order.id, {
+        method,
+        reference: String(reference).trim(),
+        paidAmount: paidAmount != null ? Number(paidAmount) : order.total,
+        customerName: customerName || order.customer.name,
+    });
+
+    res.json({ ok: true, order: orderStore.get(order.id) });
+});
+
+/** Owner-side: mark a pending wallet payment as verified & paid. */
+app.post("/api/orders/:id/verify", (req, res) => {
+    const order = orderStore.get(req.params.id);
+    if (!order) return res.status(404).json({ error: "Order not found." });
+
+    const updated = orderStore.update(order.id, {
+        paymentStatus: "paid",
+        status: "confirmed",
+    });
+
+    orderStore.addPaymentNote(order.id, {
+        method: order.paymentMethod,
+        reference: "owner-verified",
+        paidAmount: order.total,
+        customerName: order.customer.name,
+    });
+
+    res.json({ ok: true, order: orderStore.get(order.id) });
+});
+
 // ------------------------------------------------------------ Static hosting
 
 app.use(express.static(ROOT, { extensions: ["html"] }));

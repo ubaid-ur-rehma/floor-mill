@@ -259,6 +259,27 @@
             letter-spacing: 1px;
         }
 
+        .copy-btn {
+            margin: 8px auto 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid var(--accent-dark);
+            color: var(--brand-dark);
+            border-radius: 999px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--brand);
+            color: #fff;
+        }
+
         .paystep-upload {
             display: flex;
             align-items: center;
@@ -361,6 +382,13 @@
         }
     </script>
 
+    <section class="page-banner">
+        <canvas data-3d-scene="banner" aria-hidden="true"></canvas>
+        <span class="crumb">Home / Checkout</span>
+        <h1>CHECKOUT</h1>
+        <p>Review your order, choose Easypaisa or JazzCash, pay, and send us your payment screenshot.</p>
+    </section>
+
     <div class="checkout-wrap">
         <!-- LEFT: cart + customer -->
         <div>
@@ -433,6 +461,7 @@
     <div class="scroll-progress" id="scrollProgress"></div>
     <button class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
     <script src="effects.js"></script>
+    <script src="scene3d.js"></script>
 </body>
 
 </html>
