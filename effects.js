@@ -143,4 +143,35 @@
             });
         }
     }
+
+    // ---- Cinematic film: reveal each story panel on scroll ----
+    var filmPanels = document.querySelectorAll('.film-panel');
+    if (filmPanels.length) {
+        if (!('IntersectionObserver' in window)) {
+            filmPanels.forEach(function (el) { el.classList.add('in'); });
+        } else {
+            var fio = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) { e.target.classList.add('in'); }
+                    else { e.target.classList.remove('in'); }
+                });
+            }, { threshold: 0.3 });
+            filmPanels.forEach(function (el) { fio.observe(el); });
+        }
+    }
+
+    // ---- Magnetic pull on the film buttons ----
+    if (!isMobile && !reduce) {
+        document.querySelectorAll('.film-magnet').forEach(function (btn) {
+            btn.addEventListener('mousemove', function (e) {
+                var r = btn.getBoundingClientRect();
+                var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+                var dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+                btn.style.transform = 'translate(' + (dx * 16).toFixed(1) + 'px,' + (dy * 16).toFixed(1) + 'px)';
+            });
+            btn.addEventListener('mouseleave', function () {
+                btn.style.transform = 'translate(0,0)';
+            });
+        });
+    }
 })();

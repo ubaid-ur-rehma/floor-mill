@@ -4,7 +4,7 @@
    ========================================================================== */
 
 :root {
-    --brand: #040403;
+    --brand: #fffffd;
     --brand-dark: #3f2511;
     --brand-light: #8a5a2b;
     --accent: #e0a627;
@@ -40,7 +40,8 @@
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    /* No overflow clipping on the root — it would break position: sticky.
+       Overflow is prevented at the element level instead (see .main-nav etc). */
 }
 
 body {
@@ -48,7 +49,7 @@ body {
     color: var(--ink);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.65;
-    overflow-x: hidden;
+    /* No overflow clipping here either — sticky must keep working. */
 }
 
 img {
@@ -579,6 +580,7 @@ a {
     max-width: var(--maxw);
     margin: 0 auto 60px;
     padding: 0 20px;
+    overflow: hidden; /* keeps any wide inner content inside the page */
 }
 
 .promo-banner .inner {
@@ -1400,26 +1402,31 @@ footer .copyright {
         display: block;
     }
 
+    /* Mobile menu: off-canvas and OUT of the layout when closed, so it can
+       never create a horizontal scrollbar. */
     .main-nav {
         position: fixed;
         top: 0;
         right: 0;
         height: 100vh;
+        height: 100svh;
         width: min(80%, 330px);
         flex-direction: column;
         align-items: stretch;
         background: var(--brand-dark);
         padding: 76px 22px 30px;
         gap: 8px;
-        transform: translateX(100%);
-        transition: transform 0.35s ease;
+        transform: translateX(105%);
+        transition: transform 0.35s ease, visibility 0.35s ease;
         box-shadow: var(--shadow-lg);
         visibility: hidden;
         z-index: 300;
         overflow-y: auto;
+        /* Fully out of layout when closed -> cannot extend document width. */
+        display: none;
     }
-
     .main-nav.open {
+        display: flex;
         transform: translateX(0);
         visibility: visible;
     }
@@ -2411,7 +2418,8 @@ footer {
 }
 
 /* ---- 3D rotating product showcase ---- */
-/* Full-bleed stage so the 3D ring is never clipped by the page container. */
+/* The ring swings cards outside the box in 3D — contain that so it can
+   never create a horizontal scrollbar. */
 .showcase {
     perspective: 1600px;
     width: 100%;
@@ -2419,7 +2427,7 @@ footer {
     margin: 0 auto 70px;
     padding: 0 20px;
     box-sizing: border-box;
-    overflow: visible;
+    overflow: hidden; /* contains the rotating cards */
 }
 
 .showcase-stage {
@@ -2427,9 +2435,8 @@ footer {
     height: 460px;
     transform-style: preserve-3d;
     transition: transform 0.1s ease-out;
-    /* Extra elbow-room for the ring's front card + its reflection */
     margin: 0 auto;
-    overflow: visible;
+    overflow: hidden; /* clip the rotating cards HERE, not on the parent */
 }
 
 .showcase-ring {
@@ -2580,17 +2587,21 @@ footer {
    3D SHOWCASE — final fit & polish
    ========================================================================== */
 
-/* The section that holds the showcase must not clip the rotating ring. */
+/* The showcase may spill sideways as the ring turns, but must never create a
+   horizontal scrollbar. `clip` trims the overflow without breaking 3D. */
 .section:has(.showcase) {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 .showcase {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 .showcase-stage {
-    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
     /* Wide enough for the front card to sit centred with room to spin */
     max-width: 100%;
 }
@@ -2675,5 +2686,185 @@ footer {
     .page-banner canvas[data-3d-scene],
     .payment-hero canvas[data-3d-scene] {
         opacity: 0.7;
+    }
+}/* ==========================================================================
+   CINEMATIC 3D FILM — scroll-driven story section
+   ========================================================================== */
+
+.film {
+    position: relative;
+    background: #140c05;
+    /* `clip` contains the 3D stage horizontally WITHOUT breaking
+       `position: sticky` inside (unlike `overflow: hidden`). */
+    overflow-x: clip;
+    overflow-y: visible;
+}
+
+/* The stage is pinned while the driver scrolls past it.
+   .film establishes the containing block so `top: 0` stays at the
+   top of THIS section (not the page). */
+.film-stage {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: clip;
+    z-index: 1;
+    /* Pull the driver up so the story starts over the pinned stage */
+    margin-bottom: -100vh;
+    margin-bottom: -100svh;
+}
+
+#film3d {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Warm vignette so text always reads over the moving 3D world */
+.film-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 50% 45%, rgba(20, 12, 5, 0.05), rgba(20, 12, 5, 0.72) 88%),
+        linear-gradient(180deg, rgba(20, 12, 5, 0.55), transparent 22%, transparent 78%, rgba(20, 12, 5, 0.85));
+}
+
+/* The driver scrolls normally and overlaps the pinned stage */
+.film-driver {
+    position: relative;
+    z-index: 2;
+}
+
+.film-panel {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10vh clamp(18px, 6vw, 80px);
+    pointer-events: none;
+}
+
+/* Hide the section entirely if WebGL never initialises */
+.film.no-webgl {
+    display: none;
+}
+
+.film-panel .btn,
+.film-panel a {
+    pointer-events: auto;
+}
+
+.film-kicker {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+}
+
+.film-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(34px, 7.5vw, 86px);
+    line-height: 1.04;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff8ec;
+    text-shadow: 0 10px 60px rgba(0, 0, 0, 0.7);
+}
+
+.film-panel h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(26px, 4.6vw, 56px);
+    line-height: 1.1;
+    font-weight: 700;
+    color: #fff8ec;
+    margin-bottom: 14px;
+    text-shadow: 0 8px 44px rgba(0, 0, 0, 0.65);
+}
+
+.film-lede {
+    font-size: clamp(15px, 1.9vw, 21px);
+    color: #f6e0b8;
+    margin-top: 10px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+}
+
+.film-sub {
+    font-size: clamp(13px, 1.6vw, 17px);
+    color: rgba(250, 243, 230, 0.78);
+    margin-top: 8px;
+}
+
+.film-panel p {
+    max-width: 620px;
+    line-height: 1.75;
+    color: rgba(250, 243, 230, 0.9);
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
+}
+
+.film-btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.film-hint {
+    margin-top: 28px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(250, 243, 230, 0.55) !important;
+}
+
+/* Magnetic pull on the film buttons */
+.film-magnet {
+    transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.25s ease;
+    will-change: transform;
+}
+
+/* Fade each panel in as it arrives (JS adds .in) */
+.film-panel {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.film-panel.in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (max-width: 768px) {
+    .film-panel {
+        padding: 12vh 18px;
+    }
+    .film-title {
+        letter-spacing: 1px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .film-stage {
+        position: relative;
+        height: 60vh;
+        height: 60svh;
+        margin-bottom: 0;
+    }
+    .film-panel {
+        opacity: 1;
+        transform: none;
     }
 }

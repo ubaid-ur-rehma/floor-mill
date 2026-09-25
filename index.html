@@ -31,6 +31,57 @@
             window.API_BASE_URL = "";
         </script>
 
+        <!-- ===== CINEMATIC 3D FILM ===== -->
+        <section class="film" id="film">
+            <!-- Fixed WebGL stage: the wheat field, chakki and particles live here -->
+            <div class="film-stage">
+                <canvas id="film3d" aria-hidden="true"></canvas>
+                <div class="film-vignette" aria-hidden="true"></div>
+            </div>
+
+            <!-- Tall scroll driver: the story beats that move the camera -->
+            <div class="film-driver" id="filmDriver">
+                <div class="film-panel">
+                    <span class="film-kicker">Since 1975 &middot; Mustafabad, Lahore</span>
+                    <h1 class="film-title">NAZIR ATTA CHAKKI</h1>
+                    <p class="film-lede">From Golden Wheat to Fresh Atta</p>
+                    <p class="film-sub">Pure taste. Traditional goodness. Freshly milled.</p>
+                    <div class="film-btns">
+                        <a href="product.html" class="btn film-magnet">Explore Our Atta</a>
+                        <a href="about.html" class="btn btn-outline film-magnet">Experience Our Story</a>
+                    </div>
+                    <p class="film-hint"><i class="fa-solid fa-computer-mouse"></i> Scroll to travel through the film</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">The Field</span>
+                    <h2>Golden Wheat at Sunrise</h2>
+                    <p>Every bag begins here &mdash; in sun-warmed Punjab fields.</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">The Chakki</span>
+                    <h2>Stone-Ground, The Traditional Way</h2>
+                    <p>Heavy millstones turn slowly &mdash; exactly as they have for five decades.</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">Fresh Atta</span>
+                    <h2>Wheat Becomes Flour</h2>
+                    <p>Watch the grain break into soft, fine flour &mdash; milled fresh, never stored old.</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">Our Pack</span>
+                    <h2>Sealed Fresh for Your Family</h2>
+                    <p>Weighed, packed and handed over the same day it is ground.</p>
+                    <div class="film-btns">
+                        <a href="product.html" class="btn film-magnet">See Our Range</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ===== Top bar ===== -->
         <div class="topbar">
             <div class="tb-left">
@@ -509,6 +560,7 @@
         <button class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
         <script src="effects.js"></script>
         <script src="hero3d.js"></script>
+        <script src="film3d.js"></script>
     </body>
 
 </html>
