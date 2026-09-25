@@ -24,6 +24,7 @@
     </head>
 
     <body>
+        <div class="nac-cursor" aria-hidden="true"><span></span></div>
         <!-- API location. Leave EMPTY when the backend serves this page (npm start).
              When hosting the front end on GitHub Pages, set this to your Render
              backend URL, e.g. "https://nazir-atta-chakki.onrender.com". -->
@@ -89,6 +90,14 @@
             <div class="film-stage">
                 <canvas id="film3d" aria-hidden="true"></canvas>
                 <div class="film-vignette" aria-hidden="true"></div>
+                <button class="film-sound" id="filmSound" type="button" aria-label="Turn sound on" aria-pressed="false">
+                    <i class="fa-solid fa-volume-xmark"></i><span>Sound off</span>
+                </button>
+                <div class="film-loading" aria-hidden="true">
+                    <span class="film-loading__grain"></span>
+                    <span class="film-loading__label">Preparing the chakki</span>
+                    <span class="film-loading__progress">NAZIR ATTA CHAKKI</span>
+                </div>
                 <div class="film-cue" aria-hidden="true"></div>
             </div>
 
@@ -106,29 +115,62 @@
                 </div>
 
                 <div class="film-panel">
-                    <span class="film-kicker">The Field</span>
+                    <span class="film-kicker">01 &middot; The Field</span>
                     <h2>Golden Wheat at Sunrise</h2>
-                    <p>Every bag begins here &mdash; in sun-warmed Punjab fields.</p>
+                    <p>Every bag begins in sun-warmed Punjab fields, where wind moves through each ripened head.</p>
                 </div>
 
                 <div class="film-panel">
-                    <span class="film-kicker">The Chakki</span>
+                    <span class="film-kicker">02 &middot; The Harvest</span>
+                    <h2>One Grain Carries the Story</h2>
+                    <p>Follow the harvest as thousands of grains lift from the field and gather around the camera.</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">03 &middot; The Chakki</span>
                     <h2>Stone-Ground, The Traditional Way</h2>
-                    <p>Heavy millstones turn slowly &mdash; exactly as they have for five decades.</p>
+                    <p>Heavy millstones turn slowly, opening the grain with care as they have for five decades.</p>
                 </div>
 
                 <div class="film-panel">
-                    <span class="film-kicker">Fresh Atta</span>
+                    <span class="film-kicker">04 &middot; Fresh Atta</span>
                     <h2>Wheat Becomes Flour</h2>
-                    <p>Watch the grain break into soft, fine flour &mdash; milled fresh, never stored old.</p>
+                    <p>Fine flour leaves the chakki like a soft river of light, never old stock, never rushed.</p>
+                </div>
+
+                <div class="film-panel film-panel--product">
+                    <span class="film-kicker">05 &middot; The Pack</span>
+                    <h2>Freshly Milled. Naturally Good.</h2>
+                    <p>From our chakki to a sealed Nazir Atta pack, made for the meals waiting at home.</p>
+                    <div class="film-meta"><span>1 KG</span><span>2 KG</span><span>5 KG</span><span>10 KG</span></div>
+                    <button type="button" class="btn film-magnet" id="exploreInside">Explore Inside</button>
                 </div>
 
                 <div class="film-panel">
-                    <span class="film-kicker">Our Pack</span>
-                    <h2>Sealed Fresh for Your Family</h2>
-                    <p>Weighed, packed and handed over the same day it is ground.</p>
+                    <span class="film-kicker">06 &middot; Inside</span>
+                    <h2>Enter the Flour</h2>
+                    <p>Step through the pack and into the warm kitchen where simple ingredients become something shared.</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">07 &middot; The Kitchen</span>
+                    <h2>Flour, Water, Time</h2>
+                    <p>Hands shape the dough, the rolling pin finds its rhythm, and a roti rises over the heat.</p>
+                </div>
+
+                <div class="film-panel">
+                    <span class="film-kicker">08 &middot; The Table</span>
+                    <h2>Good Food Brings Us Together</h2>
+                    <p>A warm table, fresh roti, and the familiar taste of flour milled close to home.</p>
+                </div>
+
+                <div class="film-panel film-panel--final">
+                    <span class="film-kicker">09 &middot; Your Home</span>
+                    <h2>From Our Chakki<br>To Your Home.</h2>
+                    <p>Choose your atta and bring the story home to Lahore.</p>
                     <div class="film-btns">
-                        <a href="product.html" class="btn film-magnet">See Our Range</a>
+                        <a href="#products" class="btn film-magnet">Shop the Range</a>
+                        <a href="about.html" class="btn btn-outline film-magnet">Our Story</a>
                     </div>
                 </div>
             </div>
@@ -379,6 +421,7 @@
             aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
 
         <!-- ===== Load products from the backend catalogue ===== -->
+        <script src="experience-config.js"></script>
         <script>
             (function () {
                 var API = window.API_BASE_URL || "";
@@ -386,16 +429,16 @@
                 var shopPhone = "923297466292";
 
                 // Built-in products so the site works fully on GitHub Pages (no backend).
-                var PRODUCTS = [
-                    { name: "Desi Gandum ke Atta", price: 180, unit: "kg", image: "atta2.jpeg", tag: "Bestseller", description: "Whole-wheat desi atta, traditionally ground for a rich, natural taste and full nutrition." },
-                    { name: "Narala Supreme Chawal", price: 415, priceMax: 430, unit: "kg", image: "atta3.jpeg", tag: "Premium", description: "Premium long-grain rice with a delicate aroma \u2014 perfect for biryani and everyday meals." },
-                    { name: "White Atta", price: 180, unit: "kg", image: "atta4.jpeg", tag: "Daily", description: "Fine, soft white atta that gives perfect rotis, naan and bakery at home." },
-                    { name: "Makai ka Atta", price: 210, unit: "kg", image: "img/makai-atta.svg", tag: "Fresh", description: "Fresh ground corn (maize) flour \u2014 perfect for makai ki roti and traditional dishes." },
-                    { name: "Jo ka Atta", price: 280, unit: "kg", image: "img/jo-atta.svg", tag: "Healthy", description: "Wholesome barley (jo) flour, rich in fibre \u2014 healthy and traditionally ground." },
-                    { name: "Chawal ka Atta", price: 300, unit: "kg", image: "img/chawal-atta.svg", tag: "Special", description: "Fine rice flour (chawal ka atta) for baking, traditional sweets and crispy snacks." },
-                    { name: "Gandum ka Dalia", price: 220, unit: "kg", image: "img/gandum-dalia.svg", tag: "Healthy", description: "Coarse-ground cracked wheat dalia \u2014 a wholesome, fibre-rich breakfast choice." },
-                    { name: "Jo ka Dalia", price: 360, unit: "kg", image: "img/jo-dalia.svg", tag: "Premium", description: "Cracked barley dalia, full of fibre and nutrition \u2014 traditionally ground and pure." },
-                    { name: "Bajre ka Atta", price: 200, unit: "kg", image: "img/bajra-atta.svg", tag: "Winter Favourite", description: "Pearl millet (bajra) flour \u2014 a healthy, warming choice for bajra roti in winter." },
+                var PRODUCTS = window.NAC_PRODUCTS || [
+                    { id: "desi-gandum-atta", name: "Desi Gandum ke Atta", price: 180, unit: "kg", image: "atta2.jpeg", tag: "Bestseller", description: "Whole-wheat desi atta, traditionally ground for a rich, natural taste and full nutrition." },
+                    { id: "narala-supreme-chawal", name: "Narala Supreme Chawal", price: 415, priceMax: 430, unit: "kg", image: "atta3.jpeg", tag: "Premium", description: "Premium long-grain rice with a delicate aroma \u2014 perfect for biryani and everyday meals." },
+                    { id: "white-atta", name: "White Atta", price: 180, unit: "kg", image: "atta4.jpeg", tag: "Daily", description: "Fine, soft white atta that gives perfect rotis, naan and bakery at home." },
+                    { id: "makai-atta", name: "Makai ka Atta", price: 210, unit: "kg", image: "img/makai-atta.svg", tag: "Fresh", description: "Fresh ground corn (maize) flour \u2014 perfect for makai ki roti and traditional dishes." },
+                    { id: "jo-atta", name: "Jo ka Atta", price: 280, unit: "kg", image: "img/jo-atta.svg", tag: "Healthy", description: "Wholesome barley (jo) flour, rich in fibre \u2014 healthy and traditionally ground." },
+                    { id: "chawal-atta", name: "Chawal ka Atta", price: 300, unit: "kg", image: "img/chawal-atta.svg", tag: "Special", description: "Fine rice flour (chawal ka atta) for baking, traditional sweets and crispy snacks." },
+                    { id: "gandum-dalia", name: "Gandum ka Dalia", price: 220, unit: "kg", image: "img/gandum-dalia.svg", tag: "Healthy", description: "Coarse-ground cracked wheat dalia \u2014 a wholesome, fibre-rich breakfast choice." },
+                    { id: "jo-dalia", name: "Jo ka Dalia", price: 360, unit: "kg", image: "img/jo-dalia.svg", tag: "Premium", description: "Cracked barley dalia, full of fibre and nutrition \u2014 traditionally ground and pure." },
+                    { id: "bajra-atta", name: "Bajre ka Atta", price: 200, unit: "kg", image: "img/bajra-atta.svg", tag: "Winter Favourite", description: "Pearl millet (bajra) flour \u2014 a healthy, warming choice for bajra roti in winter." },
                 ];
 
                 function money(p) {
@@ -570,6 +613,7 @@
         <script src="hero3d.js"></script>
         <script src="film3d.js"></script>
         <script src="cart.js"></script>
+    
     </body>
 
 </html>

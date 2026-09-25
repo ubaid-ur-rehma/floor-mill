@@ -69,6 +69,20 @@ To go live:
 Everything is in **`server/data/catalogue.js`**. Change a price there and it
 updates the site and the checkout automatically.
 
+## Cinematic experience assets
+
+The homepage film uses the local Three.js runtime and procedural fallback geometry when supplied assets are absent. Brand-facing experience data is centralized in **`experience-config.js`** so models and media can be added without changing scene code.
+
+Replaceable asset locations:
+
+- `assets/models/` - GLB/GLTF wheat, chakki, and package models
+- `assets/textures/` - wheat, flour, stone, wood, and package textures
+- `assets/products/` - Nazir logo and product artwork
+- `assets/audio/` - optional wind, chakki, flour, and kitchen audio
+- `assets/fonts/` - brand font files
+
+The current procedural package, chakki, wheat field, flour particles, and kitchen are intentional fallbacks. Add real files at the paths in `experience-config.js` before wiring a loader for them.
+
 ## Orders
 
 Orders are saved to `server/data/orders.json`. View any order:

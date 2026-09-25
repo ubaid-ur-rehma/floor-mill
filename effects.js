@@ -184,4 +184,54 @@
             });
         });
     }
+
+    // ---- Opt-in sound design: no audio context is created until a click.
+    var soundButton = document.getElementById('filmSound');
+    if (soundButton && !reduce) {
+        var audioContext = null;
+        var ambientGain = null;
+        var windOscillator = null;
+        soundButton.addEventListener('click', function () {
+            var enabled = soundButton.getAttribute('aria-pressed') === 'true';
+            if (!enabled) {
+                audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
+                ambientGain = audioContext.createGain();
+                ambientGain.gain.value = 0.018;
+                windOscillator = audioContext.createOscillator();
+                windOscillator.type = 'sine';
+                windOscillator.frequency.value = 86;
+                windOscillator.connect(ambientGain);
+                ambientGain.connect(audioContext.destination);
+                windOscillator.start();
+                soundButton.setAttribute('aria-pressed', 'true');
+                soundButton.innerHTML = '<i class="fa-solid fa-volume-high"></i><span>Sound on</span>';
+            } else {
+                if (ambientGain) ambientGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.25);
+                if (windOscillator) windOscillator.stop(audioContext.currentTime + 0.3);
+                soundButton.setAttribute('aria-pressed', 'false');
+                soundButton.innerHTML = '<i class="fa-solid fa-volume-xmark"></i><span>Sound off</span>';
+                windOscillator = null;
+            }
+        });
+    }
+
+    // ---- Lightweight custom cursor for the cinematic canvas and controls.
+    var cursor = document.querySelector('.nac-cursor');
+    if (cursor && !isMobile && !reduce) {
+        var cursorX = -40, cursorY = -40, cursorTargetX = -40, cursorTargetY = -40;
+        window.addEventListener('mousemove', function (event) {
+            cursorTargetX = event.clientX;
+            cursorTargetY = event.clientY;
+            cursor.classList.toggle('is-link', !!event.target.closest('a, button'));
+        }, { passive: true });
+        function moveCursor() {
+            cursorX += (cursorTargetX - cursorX) * 0.18;
+            cursorY += (cursorTargetY - cursorY) * 0.18;
+            cursor.style.transform = 'translate3d(' + cursorX + 'px,' + cursorY + 'px,0)';
+            requestAnimationFrame(moveCursor);
+        }
+        moveCursor();
+    } else if (cursor) {
+        cursor.remove();
+    }
 })();

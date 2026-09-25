@@ -52,6 +52,8 @@
 
         var scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0xf2e0c2, 0.026);
+        var filmRoot = document.getElementById('film');
+        if (filmRoot) filmRoot.classList.add('webgl-ready');
 
         var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
         camera.position.set(0, 0.7, 14);
@@ -237,6 +239,126 @@
         var puff = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), puffMat);
         puff.position.set(2.4, -1.35, 0); chakki.add(puff);
 
+        // ================================================ 4. PRODUCT + KITCHEN
+        // These sets stay in the same world as the chakki. The camera reveals
+        // them progressively so the scroll feels like one continuous journey.
+        function labelTexture(title, subtitle) {
+            var label = document.createElement('canvas');
+            label.width = 512;
+            label.height = 700;
+            var ctx = label.getContext('2d');
+            ctx.fillStyle = '#ead39d';
+            ctx.fillRect(0, 0, label.width, label.height);
+            ctx.fillStyle = '#3d2413';
+            ctx.textAlign = 'center';
+            ctx.font = '700 42px Georgia';
+            ctx.fillText('NAZIR', 256, 190);
+            ctx.font = '700 58px Georgia';
+            ctx.fillText('ATTA', 256, 270);
+            ctx.font = '700 42px Georgia';
+            ctx.fillText('CHAKKI', 256, 340);
+            ctx.strokeStyle = '#a8782e';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.arc(256, 440, 72, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.font = '700 24px Arial';
+            ctx.fillText(subtitle, 256, 575);
+            ctx.font = '600 20px Arial';
+            ctx.fillText(title, 256, 620);
+            return new THREE.CanvasTexture(label);
+        }
+
+        var pack = new THREE.Group();
+        pack.position.set(0, 0.3, -8);
+        var packBodyMat = new THREE.MeshStandardMaterial({
+            color: 0xd6b36b, roughness: 0.72, metalness: 0.02, transparent: true, opacity: 0,
+        });
+        var packBody = new THREE.Mesh(new THREE.BoxGeometry(3.15, 4.2, 1.08), packBodyMat);
+        packBody.castShadow = !isMobile;
+        pack.add(packBody);
+        var packTopMat = new THREE.MeshStandardMaterial({ color: 0x9c6a2f, roughness: 0.54, transparent: true, opacity: 0 });
+        var packTop = new THREE.Mesh(new THREE.BoxGeometry(3.22, 0.2, 1.12), packTopMat);
+        packTop.position.y = 2.1;
+        pack.add(packTop);
+        var labelMat = new THREE.MeshBasicMaterial({ map: labelTexture('STONE GROUND', 'PURE WHEAT FLOUR'), transparent: true, opacity: 0 });
+        var label = new THREE.Mesh(new THREE.PlaneGeometry(2.35, 3.2), labelMat);
+        label.position.set(0, 0.05, 0.57);
+        pack.add(label);
+        var packShadow = new THREE.Mesh(new THREE.CircleGeometry(2.3, 48), new THREE.MeshBasicMaterial({ color: 0x24160d, transparent: true, opacity: 0 }));
+        packShadow.rotation.x = -Math.PI / 2;
+        packShadow.position.y = -2.15;
+        packShadow.scale.set(1.35, 0.55, 1);
+        pack.add(packShadow);
+        scene.add(pack);
+
+        // The pack is a real touch-friendly scene object, not a CSS card.
+        var packRotation = 0;
+        var packRotationTarget = 0;
+        var packZoom = 1;
+        var packZoomTarget = 1;
+        var draggingPack = false;
+        var lastPackX = 0;
+        canvas.style.touchAction = 'none';
+        canvas.addEventListener('pointerdown', function (event) {
+            draggingPack = true;
+            lastPackX = event.clientX;
+            canvas.setPointerCapture(event.pointerId);
+            canvas.classList.add('is-dragging');
+        });
+        canvas.addEventListener('pointermove', function (event) {
+            if (!draggingPack) return;
+            packRotationTarget += (event.clientX - lastPackX) * 0.012;
+            lastPackX = event.clientX;
+        });
+        function releasePack(event) {
+            draggingPack = false;
+            if (event.pointerId !== undefined && canvas.hasPointerCapture(event.pointerId)) {
+                canvas.releasePointerCapture(event.pointerId);
+            }
+            canvas.classList.remove('is-dragging');
+        }
+        canvas.addEventListener('pointerup', releasePack);
+        canvas.addEventListener('pointercancel', releasePack);
+        canvas.addEventListener('wheel', function (event) {
+            event.preventDefault();
+            packZoomTarget = Math.max(0.76, Math.min(1.34, packZoomTarget - event.deltaY * 0.0008));
+        }, { passive: false });
+        var insideButton = document.getElementById('exploreInside');
+        if (insideButton) insideButton.addEventListener('click', function () {
+            var panels = document.querySelectorAll('.film-panel');
+            if (panels[7]) panels[7].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            packZoomTarget = 1.18;
+        });
+
+        var kitchen = new THREE.Group();
+        kitchen.position.set(0, -1.8, -13);
+        var tableMat = new THREE.MeshStandardMaterial({ color: 0x5d321b, roughness: 0.82 });
+        var marbleMat = new THREE.MeshStandardMaterial({ color: 0xd7c9b5, roughness: 0.9 });
+        var table = new THREE.Mesh(new THREE.BoxGeometry(11, 0.35, 6), tableMat);
+        table.position.y = -0.2;
+        table.receiveShadow = !isMobile;
+        kitchen.add(table);
+        var counter = new THREE.Mesh(new THREE.BoxGeometry(9, 0.18, 3.8), marbleMat);
+        counter.position.set(0, 0.05, -0.5);
+        kitchen.add(counter);
+        var bowl = new THREE.Mesh(new THREE.TorusGeometry(1.05, 0.18, 12, 32), new THREE.MeshStandardMaterial({ color: 0xb36d33, roughness: 0.34, metalness: 0.42 }));
+        bowl.position.set(-2.1, 0.45, -0.7);
+        bowl.rotation.x = Math.PI / 2;
+        kitchen.add(bowl);
+        var roti = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.08, 0.12, 40), new THREE.MeshStandardMaterial({ color: 0xc88b42, roughness: 0.88 }));
+        roti.position.set(1.6, 0.38, 0.1);
+        roti.scale.set(1.1, 1, 0.9);
+        kitchen.add(roti);
+        var pin = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 3.4, 16), new THREE.MeshStandardMaterial({ color: 0x9a5a2c, roughness: 0.65 }));
+        pin.position.set(3.2, 0.55, -0.2);
+        pin.rotation.z = Math.PI / 2;
+        kitchen.add(pin);
+        var kitchenLight = new THREE.PointLight(0xffdca4, 0, 18);
+        kitchenLight.position.set(-2, 5, 2);
+        kitchen.add(kitchenLight);
+        scene.add(kitchen);
+
         // ============================================ 3. WHEAT -> FLOUR
         var PCOUNT = isMobile ? 3200 : 9000;
         var pGeo = new THREE.BufferGeometry();
@@ -358,16 +480,22 @@
         var SHOTS = [
             { pos: [0, 0.7, 14], look: [0, 1.4, 0], fov: 55 },
             { pos: [1.5, 1.7, 7], look: [0, 1.8, -2], fov: 48 },
-            { pos: [0.7, 1.6, 3.4], look: [0, 1.5, 0], fov: 42 },
+            { pos: [-2.5, 1.5, 5.2], look: [0, 0.2, -3], fov: 46 },
             { pos: [5.6, 1.7, 6.4], look: [0, 0.1, -4], fov: 45 },
             { pos: [-4.4, 2.3, 4.6], look: [0, -0.3, -4], fov: 45 },
-            { pos: [0, 2.3, 7.5], look: [0, 0.6, -2], fov: 50 },
-            { pos: [0, 1.3, 6.0], look: [0, 0.4, -2], fov: 40 },
+            { pos: [0, 1.3, 8.5], look: [0, 0.3, -8], fov: 48 },
+            { pos: [3.8, 1.2, 7.2], look: [0, 0, -10], fov: 43 },
+            { pos: [-4.2, 2.1, 6.3], look: [0, -0.6, -12], fov: 46 },
+            { pos: [0, 2.6, 7.8], look: [0, -0.7, -13], fov: 50 },
+            { pos: [0, 2.0, 9.5], look: [0, 0.3, -8], fov: 48 },
         ];
 
         var camPos = new THREE.Vector3(0, 0.7, 14);
         var camLook = new THREE.Vector3(0, 1.4, 0);
         var progress = 0;
+        var targetProgress = 0;
+        var scrollVelocity = 0;
+        var lastTargetProgress = 0;
         var milling = 0;
 
         // Read scroll progress across the film driver.
@@ -408,9 +536,13 @@
             requestAnimationFrame(animate);
             if (!visible) return;
 
-            var t = clock.getElapsedTime();
-            var dt = Math.min(clock.getDelta ? 0.05 : 0.016, 0.05);
-            progress = computeProgress();
+            var dt = Math.min(clock.getDelta(), 0.05);
+            var t = clock.elapsedTime;
+            targetProgress = computeProgress();
+            scrollVelocity = (targetProgress - lastTargetProgress) * 0.9 + scrollVelocity * 0.1;
+            lastTargetProgress = targetProgress;
+            var scrollDamping = 0.045 + Math.min(Math.abs(scrollVelocity) * 1.4, 0.12);
+            progress += (targetProgress - progress) * scrollDamping;
 
             // ---- camera interpolation (film-like gliding) ----
             var maxShot = SHOTS.length - 1;
@@ -439,7 +571,8 @@
 
             // subtle handheld shake, stronger while milling
             milling = Math.max(0, Math.min(1, (progress - 0.42) / 0.28));
-            var shake = 0.012 + milling * 0.03;
+            var velocityEnergy = Math.min(Math.abs(scrollVelocity) * 5, 1);
+            var shake = 0.012 + milling * 0.03 + velocityEnergy * 0.045;
             camera.position.set(
                 camPos.x + Math.sin(t * 1.7) * shake + mouseX * 0.35,
                 camPos.y + Math.cos(t * 2.3) * shake * 0.7 - mouseY * 0.2,
@@ -453,8 +586,9 @@
 
             // ---- animate the world ----
             wheatMat.uniforms.uTime.value = t;
+            wheatMat.uniforms.uWind.value = 1.15 + velocityEnergy * 2.2;
             partMat.uniforms.uTime.value = t;
-            partMat.uniforms.uProgress.value = milling;
+            partMat.uniforms.uProgress.value = Math.min(1, milling + velocityEnergy * 0.12);
 
             topStone.rotation.y += 0.9 * dt;
             furrows.rotation.y += 0.9 * dt;
@@ -463,6 +597,20 @@
 
             puff.scale.setScalar(1 + Math.sin(t * 2.2) * 0.07);
             puffMat.opacity = 0.18 + milling * 0.3;
+
+            var reveal = Math.max(0, Math.min(1, (progress - 0.46) / 0.16));
+            var kitchenReveal = Math.max(0, Math.min(1, (progress - 0.67) / 0.18));
+            packRotation += (packRotationTarget - packRotation) * 0.08;
+            packZoom += (packZoomTarget - packZoom) * 0.08;
+            pack.rotation.y = packRotation + t * 0.035 * reveal;
+            pack.scale.setScalar(packZoom);
+            pack.position.y = 0.3 + Math.sin(t * 1.3) * 0.06 * reveal;
+            packBodyMat.opacity = reveal * 0.96;
+            packTopMat.opacity = reveal * 0.96;
+            labelMat.opacity = reveal;
+            packShadow.material.opacity = reveal * 0.3;
+            kitchenLight.intensity = kitchenReveal * 3.2;
+            kitchen.rotation.y = Math.sin(t * 0.18) * 0.025;
 
             particles.rotation.y = t * 0.04;
             dust.rotation.y = t * 0.012;
