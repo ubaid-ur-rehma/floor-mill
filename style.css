@@ -1707,6 +1707,42 @@ iframe {
 
 /* ---- Large phones / small tablets (<= 768px) ---- */
 @media (max-width: 768px) {
+    .topbar {
+        display: none;
+    }
+
+    .film-stage {
+        height: 100svh;
+    }
+
+    .film-panel {
+        min-height: 100svh;
+        padding: 16vh 20px 12vh;
+    }
+
+    .film-panel h2 {
+        max-width: 18ch;
+    }
+
+    .film-panel p {
+        max-width: 34ch;
+        font-size: 14px;
+    }
+
+    .film-btns,
+    .film-btns .btn {
+        width: 100%;
+    }
+
+    .film-btns .btn {
+        justify-content: center;
+    }
+
+    .film-sound {
+        top: 14px;
+        right: 14px;
+    }
+
     .hero {
         padding: 80px 16px 60px;
         background-attachment: scroll;
@@ -1787,6 +1823,17 @@ iframe {
         padding: 10px 14px;
     }
 
+    .site-header .brand {
+        min-width: 0;
+    }
+
+    .site-header .brand-text strong,
+    .site-header .brand-text span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .site-header .brand-text strong {
         font-size: 16px;
     }
@@ -1828,6 +1875,16 @@ iframe {
 
     .hero-stats .stat .num {
         font-size: 26px;
+    }
+
+    .film-meta {
+        gap: 6px;
+    }
+
+    .film-meta span {
+        min-width: 54px;
+        padding: 7px 9px;
+        font-size: 10px;
     }
 
     .usp-strip {

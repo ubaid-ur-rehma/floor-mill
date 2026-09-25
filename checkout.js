@@ -36,8 +36,9 @@ const state = {
     cart: {},        // { productId: qty }
     customer: { name: "", phone: "", note: "" },
     method: "easypaisa",
-    hasBackend: !!API,
+    hasBackend: false,
     lastOrder: null,
+
 };
 
 const money = (n) => "Rs " + Number(n).toLocaleString("en-PK");
