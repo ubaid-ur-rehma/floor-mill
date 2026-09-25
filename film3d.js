@@ -312,7 +312,7 @@
         var packZoomTarget = 1;
         var draggingPack = false;
         var lastPackX = 0;
-        canvas.style.touchAction = 'none';
+        canvas.style.touchAction = 'pan-y';
         canvas.addEventListener('pointerdown', function (event) {
             draggingPack = true;
             lastPackX = event.clientX;
@@ -334,8 +334,8 @@
         canvas.addEventListener('pointerup', releasePack);
         canvas.addEventListener('pointercancel', releasePack);
         canvas.addEventListener('wheel', function (event) {
-            event.preventDefault();
             packZoomTarget = Math.max(0.76, Math.min(1.34, packZoomTarget - event.deltaY * 0.0008));
+            if (progress > 0.44 && progress < 0.68) event.preventDefault();
         }, { passive: false });
         var insideButton = document.getElementById('exploreInside');
         if (insideButton) insideButton.addEventListener('click', function () {
