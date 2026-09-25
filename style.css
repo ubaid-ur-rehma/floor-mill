@@ -580,7 +580,8 @@ a {
     max-width: var(--maxw);
     margin: 0 auto 60px;
     padding: 0 20px;
-    overflow: hidden; /* keeps any wide inner content inside the page */
+    overflow: hidden;
+    /* keeps any wide inner content inside the page */
 }
 
 .promo-banner .inner {
@@ -1425,6 +1426,7 @@ footer .copyright {
         /* Fully out of layout when closed -> cannot extend document width. */
         display: none;
     }
+
     .main-nav.open {
         display: flex;
         transform: translateX(0);
@@ -1473,6 +1475,7 @@ footer .copyright {
 
 /* Hidden on desktop screens */
 @media (min-width: 821px) {
+
     .nav-close,
     .nav-backdrop {
         display: none;
@@ -1526,6 +1529,7 @@ footer .copyright {
         padding: 24px 18px;
     }
 }
+
 /* ============================ Payment method modal ============================ */
 .pay-logo {
     cursor: pointer;
@@ -1647,14 +1651,28 @@ footer .copyright {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes popIn {
-    from { opacity: 0; transform: translateY(16px) scale(0.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}/* ==========================================================================
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================================================
    RESPONSIVE PASS — full coverage for mobile, tablet and desktop
    (appended last so it overrides earlier rules)
    ========================================================================== */
@@ -1691,7 +1709,8 @@ iframe {
 @media (max-width: 768px) {
     .hero {
         padding: 80px 16px 60px;
-        background-attachment: scroll; /* fixed bg is janky on mobile */
+        background-attachment: scroll;
+        /* fixed bg is janky on mobile */
     }
 
     .hero h1 {
@@ -1901,7 +1920,9 @@ iframe {
         flex-direction: column;
         gap: 14px;
     }
-}/* ============================ Dynamic product loading ============================ */
+}
+
+/* ============================ Dynamic product loading ============================ */
 .loading-note {
     grid-column: 1 / -1;
     text-align: center;
@@ -1923,12 +1944,22 @@ iframe {
 
 .product-card .body p {
     flex: 1;
-}/* ==========================================================================
+}
+
+/* ==========================================================================
    PROFESSIONAL POLISH — animations, gradients, richer colour (appended last)
    ========================================================================== */
 
 /* ---- Global smooth transitions ---- */
-a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pay-card {
+a,
+button,
+.btn,
+.product-card,
+.usp,
+.pay-method,
+.testimonial,
+.menu-item,
+.pay-card {
     transition: all 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -1950,8 +1981,13 @@ a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pa
 }
 
 @keyframes slideGradient {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 300% 50%;
+    }
 }
 
 /* ---- Hero: animated gradient wash + floating glow ---- */
@@ -1973,8 +2009,15 @@ a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pa
 }
 
 @keyframes heroGlow {
-    0% { transform: scale(1) translateY(0); opacity: 0.9; }
-    100% { transform: scale(1.15) translateY(-14px); opacity: 1; }
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(1.15) translateY(-14px);
+        opacity: 1;
+    }
 }
 
 /* ---- Buttons: shine sweep on hover ---- */
@@ -2012,8 +2055,15 @@ a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pa
 }
 
 @keyframes tagPop {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* ---- USP icons: gentle float ---- */
@@ -2023,8 +2073,13 @@ a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pa
 }
 
 @keyframes iconBob {
-    from { transform: translateY(0); }
-    to { transform: translateY(-6px); }
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-6px);
+    }
 }
 
 /* ---- Section reveal on scroll ---- */
@@ -2041,29 +2096,62 @@ a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pa
 }
 
 /* Stagger children for a professional cascade */
-.reveal-stagger > * {
+.reveal-stagger>* {
     opacity: 0;
     transform: translateY(24px);
     animation: none;
 }
 
-.reveal-stagger.visible > * {
+.reveal-stagger.visible>* {
     animation: fadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
-.reveal-stagger.visible > *:nth-child(1) { animation-delay: 0.05s; }
-.reveal-stagger.visible > *:nth-child(2) { animation-delay: 0.15s; }
-.reveal-stagger.visible > *:nth-child(3) { animation-delay: 0.25s; }
-.reveal-stagger.visible > *:nth-child(4) { animation-delay: 0.35s; }
-.reveal-stagger.visible > *:nth-child(5) { animation-delay: 0.45s; }
-.reveal-stagger.visible > *:nth-child(6) { animation-delay: 0.55s; }
-.reveal-stagger.visible > *:nth-child(7) { animation-delay: 0.65s; }
-.reveal-stagger.visible > *:nth-child(8) { animation-delay: 0.75s; }
-.reveal-stagger.visible > *:nth-child(9) { animation-delay: 0.85s; }
+.reveal-stagger.visible>*:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.reveal-stagger.visible>*:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.reveal-stagger.visible>*:nth-child(3) {
+    animation-delay: 0.25s;
+}
+
+.reveal-stagger.visible>*:nth-child(4) {
+    animation-delay: 0.35s;
+}
+
+.reveal-stagger.visible>*:nth-child(5) {
+    animation-delay: 0.45s;
+}
+
+.reveal-stagger.visible>*:nth-child(6) {
+    animation-delay: 0.55s;
+}
+
+.reveal-stagger.visible>*:nth-child(7) {
+    animation-delay: 0.65s;
+}
+
+.reveal-stagger.visible>*:nth-child(8) {
+    animation-delay: 0.75s;
+}
+
+.reveal-stagger.visible>*:nth-child(9) {
+    animation-delay: 0.85s;
+}
 
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ---- Colourful section headings ---- */
@@ -2092,14 +2180,33 @@ a, button, .btn, .product-card, .usp, .pay-method, .testimonial, .menu-item, .pa
 }
 
 @keyframes waPulse {
-    0%, 100% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45); }
-    50% { box-shadow: 0 8px 34px rgba(37, 211, 102, 0.8); transform: scale(1.06); }
+
+    0%,
+    100% {
+        box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+    }
+
+    50% {
+        box-shadow: 0 8px 34px rgba(37, 211, 102, 0.8);
+        transform: scale(1.06);
+    }
 }
 
 /* ---- Trust badges: subtle colour per icon ---- */
-.trust-item:nth-child(1) i { background: #fdf3dd; color: var(--accent-dark); }
-.trust-item:nth-child(2) i { background: #eaf5e2; color: var(--leaf); }
-.trust-item:nth-child(3) i { background: #fdeae0; color: var(--terracotta); }
+.trust-item:nth-child(1) i {
+    background: #fdf3dd;
+    color: var(--accent-dark);
+}
+
+.trust-item:nth-child(2) i {
+    background: #eaf5e2;
+    color: var(--leaf);
+}
+
+.trust-item:nth-child(3) i {
+    background: #fdeae0;
+    color: var(--terracotta);
+}
 
 /* ---- Footer: gradient + link hover slide ---- */
 footer {
@@ -2117,14 +2224,26 @@ footer {
 
 /* ---- Respect reduced-motion preference ---- */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+
+    *,
+    *::before,
+    *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
     }
-    .reveal { opacity: 1; transform: none; }
-    .reveal-stagger > * { opacity: 1; }
-}/* ==========================================================================
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
+
+    .reveal-stagger>* {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
    3D ANIMATIONS & EXTRA FUNCTIONALITY
    ========================================================================== */
 
@@ -2161,6 +2280,7 @@ footer {
         opacity: 0;
         transform: perspective(800px) rotateX(28deg) translateY(50px) scale(0.94);
     }
+
     to {
         opacity: 1;
         transform: perspective(800px) rotateX(0) translateY(0) scale(1);
@@ -2191,16 +2311,50 @@ footer {
     z-index: 1;
 }
 
-.grain-3d.g1 { top: 16%; left: 8%; animation-delay: 0s; }
-.grain-3d.g2 { top: 26%; right: 10%; animation-delay: 1.5s; font-size: clamp(24px, 5vw, 46px); }
-.grain-3d.g3 { bottom: 20%; left: 16%; animation-delay: 3s; font-size: clamp(20px, 4vw, 40px); }
-.grain-3d.g4 { bottom: 26%; right: 18%; animation-delay: 4.5s; }
+.grain-3d.g1 {
+    top: 16%;
+    left: 8%;
+    animation-delay: 0s;
+}
+
+.grain-3d.g2 {
+    top: 26%;
+    right: 10%;
+    animation-delay: 1.5s;
+    font-size: clamp(24px, 5vw, 46px);
+}
+
+.grain-3d.g3 {
+    bottom: 20%;
+    left: 16%;
+    animation-delay: 3s;
+    font-size: clamp(20px, 4vw, 40px);
+}
+
+.grain-3d.g4 {
+    bottom: 26%;
+    right: 18%;
+    animation-delay: 4.5s;
+}
 
 @keyframes float3d {
-    0%, 100% { transform: translateY(0) rotateY(0deg) rotateZ(0deg) scale(1); }
-    25% { transform: translateY(-18px) rotateY(35deg) rotateZ(6deg) scale(1.06); }
-    50% { transform: translateY(-6px) rotateY(0deg) rotateZ(-4deg) scale(1); }
-    75% { transform: translateY(-24px) rotateY(-35deg) rotateZ(4deg) scale(1.04); }
+
+    0%,
+    100% {
+        transform: translateY(0) rotateY(0deg) rotateZ(0deg) scale(1);
+    }
+
+    25% {
+        transform: translateY(-18px) rotateY(35deg) rotateZ(6deg) scale(1.06);
+    }
+
+    50% {
+        transform: translateY(-6px) rotateY(0deg) rotateZ(-4deg) scale(1);
+    }
+
+    75% {
+        transform: translateY(-24px) rotateY(-35deg) rotateZ(4deg) scale(1.04);
+    }
 }
 
 /* ---- Scroll progress bar ---- */
@@ -2356,10 +2510,23 @@ footer {
 
 /* ---- Mobile: keep animations light ---- */
 @media (max-width: 768px) {
-    .grain-3d { display: none; }
-    .tilt-3d { transform: none !important; }
-    .back-top { bottom: 84px; right: 16px; width: 44px; height: 44px; }
-}/* ==========================================================================
+    .grain-3d {
+        display: none;
+    }
+
+    .tilt-3d {
+        transform: none !important;
+    }
+
+    .back-top {
+        bottom: 84px;
+        right: 16px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ==========================================================================
    ADVANCED 3D — WebGL hero canvas + layered depth
    ========================================================================== */
 
@@ -2427,7 +2594,8 @@ footer {
     margin: 0 auto 70px;
     padding: 0 20px;
     box-sizing: border-box;
-    overflow: hidden; /* contains the rotating cards */
+    overflow: hidden;
+    /* contains the rotating cards */
 }
 
 .showcase-stage {
@@ -2436,7 +2604,8 @@ footer {
     transform-style: preserve-3d;
     transition: transform 0.1s ease-out;
     margin: 0 auto;
-    overflow: hidden; /* clip the rotating cards HERE, not on the parent */
+    overflow: hidden;
+    /* clip the rotating cards HERE, not on the parent */
 }
 
 .showcase-ring {
@@ -2491,8 +2660,13 @@ footer {
 }
 
 @keyframes ringSpin {
-    from { transform: rotateY(0deg); }
-    to { transform: rotateY(360deg); }
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
 }
 
 /* ---- 3D flip cards ---- */
@@ -2570,20 +2744,27 @@ footer {
     .hero {
         min-height: auto;
     }
+
     #hero3d {
         opacity: 0.65;
     }
+
     .showcase-stage {
         height: 360px;
     }
+
     .showcase-ring {
         animation-duration: 34s;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .showcase-ring { animation: none; }
-}/* ==========================================================================
+    .showcase-ring {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
    3D SHOWCASE — final fit & polish
    ========================================================================== */
 
@@ -2628,10 +2809,13 @@ footer {
     .showcase-stage {
         height: 380px;
     }
+
     .showcase-face img {
         height: 150px;
     }
-}/* ==========================================================================
+}
+
+/* ==========================================================================
    PAGE BANNERS — 3D WebGL canvas layer
    ========================================================================== */
 
@@ -2654,11 +2838,11 @@ footer {
 }
 
 /* Keep banner text above the 3D scene */
-.page-banner > .crumb,
-.page-banner > h1,
-.page-banner > p,
-.payment-hero > h1,
-.payment-hero > p {
+.page-banner>.crumb,
+.page-banner>h1,
+.page-banner>p,
+.payment-hero>h1,
+.payment-hero>p {
     position: relative;
     z-index: 2;
 }
@@ -2683,11 +2867,14 @@ footer {
 }
 
 @media (max-width: 768px) {
+
     .page-banner canvas[data-3d-scene],
     .payment-hero canvas[data-3d-scene] {
         opacity: 0.7;
     }
-}/* ==========================================================================
+}
+
+/* ==========================================================================
    CINEMATIC 3D FILM — scroll-driven story section
    ========================================================================== */
 
@@ -2851,6 +3038,7 @@ footer {
     .film-panel {
         padding: 12vh 18px;
     }
+
     .film-title {
         letter-spacing: 1px;
     }
@@ -2863,7 +3051,194 @@ footer {
         height: 60svh;
         margin-bottom: 0;
     }
+
     .film-panel {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   BEAUTY PASS — refined film typography, scroll cue, section polish
+   ========================================================================== */
+
+/* ---- Animated scroll cue (replaces the old text hint) ---- */
+.film-cue {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(22px, 4vh, 46px);
+    transform: translateX(-50%);
+    width: 26px;
+    height: 44px;
+    border: 2px solid rgba(240, 214, 160, 0.75);
+    border-radius: 14px;
+    pointer-events: none;
+    z-index: 4;
+    animation: cueFloat 2.6s ease-in-out infinite;
+}
+
+.film-cue::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 9px;
+    width: 4px;
+    height: 8px;
+    margin-left: -2px;
+    border-radius: 2px;
+    background: var(--accent);
+    animation: cueDot 1.8s ease-in-out infinite;
+}
+
+@keyframes cueDot {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    60% {
+        transform: translateY(14px);
+        opacity: 0.15;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes cueFloat {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(6px);
+    }
+}
+
+/* Hide the cue once the user has scrolled past the first panel */
+.film.scrolled .film-cue {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* ---- Film panels: cinematic fade + rise (driven by .in) ---- */
+.film-panel>* {
+    opacity: 0;
+    transform: translateY(34px);
+    transition: opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.film-panel.in>* {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.film-panel.in>*:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.film-panel.in>*:nth-child(2) {
+    transition-delay: 0.16s;
+}
+
+.film-panel.in>*:nth-child(3) {
+    transition-delay: 0.27s;
+}
+
+.film-panel.in>*:nth-child(4) {
+    transition-delay: 0.38s;
+}
+
+.film-panel.in>*:nth-child(5) {
+    transition-delay: 0.49s;
+}
+
+/* Elegant serif display for the film title */
+.film-title {
+    letter-spacing: 3px;
+}
+
+/* Fine gold rule above each inner panel heading */
+.film-panel:not(:first-child) .film-kicker::after {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 2px;
+    margin: 10px auto 0;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+/* ---- Section polish: soft dividers + warmer backgrounds ---- */
+.section-alt {
+    background: linear-gradient(180deg, var(--bg-2) 0%, #f7f0e4 100%);
+}
+
+.section-head h2 {
+    letter-spacing: 0.5px;
+}
+
+.section-head p {
+    color: var(--muted);
+}
+
+/* Cards: gentle warm border tint on hover for a premium feel */
+.product-card:hover,
+.testimonial:hover,
+.usp:hover {
+    border-color: rgba(199, 154, 62, 0.55);
+}
+
+/* Trust items get a soft pill background */
+.trust-item {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 10px 18px;
+    box-shadow: var(--shadow-sm);
+}
+
+.trust-item i {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+}
+
+/* ---- Footer: gold hairline + softer text ---- */
+footer {
+    border-top: 3px solid transparent;
+    border-image: var(--grad-gold) 1;
+}
+
+/* ---- Back-to-top: sits above the WhatsApp button ---- */
+.back-top {
+    bottom: 104px;
+}
+
+@media (max-width: 480px) {
+    .film-cue {
+        width: 22px;
+        height: 38px;
+    }
+
+    .trust-item {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .film-cue,
+    .film-cue::before {
+        animation: none;
+    }
+
+    .film-panel>* {
         opacity: 1;
         transform: none;
     }

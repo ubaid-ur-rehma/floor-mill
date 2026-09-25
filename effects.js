@@ -146,6 +146,7 @@
 
     // ---- Cinematic film: reveal each story panel on scroll ----
     var filmPanels = document.querySelectorAll('.film-panel');
+    var filmEl = document.getElementById('film');
     if (filmPanels.length) {
         if (!('IntersectionObserver' in window)) {
             filmPanels.forEach(function (el) { el.classList.add('in'); });
@@ -157,6 +158,15 @@
                 });
             }, { threshold: 0.3 });
             filmPanels.forEach(function (el) { fio.observe(el); });
+        }
+
+        // Hide the scroll cue once the visitor starts moving through the film.
+        if (filmEl) {
+            function onFilmScroll() {
+                filmEl.classList.toggle('scrolled', window.scrollY > window.innerHeight * 0.35);
+            }
+            window.addEventListener('scroll', onFilmScroll, { passive: true });
+            onFilmScroll();
         }
     }
 
