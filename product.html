@@ -175,7 +175,7 @@
 
     <div class="scroll-progress" id="scrollProgress"></div>
     <button class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
-    <script src="effects.js"></script>
+    <script src="config.js"></script>`r`n    <script src="effects.js"></script>`r`n    <script src="cart.js"></script>
     <script src="scene3d.js"></script>
 
     <script>
@@ -218,7 +218,10 @@
                     '<p>' + p.description + '</p>' +
                     '<div class="foot">' +
                     '<span class="price">' + priceText(p) + ' <small>per ' + p.unit + '</small></span>' +
+                    '<div class="card-actions">' +
+                    '<button type="button" class="mini-btn mini-btn--cart" data-add-to-cart="' + p.id + '"><i class="fa-solid fa-cart-plus"></i> Add</button>' +
                     '<a href="https://wa.me/' + shopPhone + '" target="_blank" rel="noopener" class="mini-btn"><i class="fa-brands fa-whatsapp"></i> Order</a>' +
+                    '</div>' +
                     '</div></div></article>';
             }
 

@@ -201,13 +201,18 @@
             </div>
         </div>
 
-        <!-- ===== About split ===== -->
-        <section class="section">
+        <!-- ===== Product Customizer ===== -->
+        <section class="section" id="choose">
             <div class="section-head">
-                <span class="kicker">3D Showcase</span>
-                <h2>Spin Through Our Range</h2>
-                <p>Move your cursor to tilt the carousel &mdash; a full 3D view of our products.</p>
+                <span class="kicker">Build Your Order</span>
+                <h2>Choose Your Nazir Atta</h2>
+                <p>Select the product, pick a pack size and set your quantity &mdash; the price updates instantly.</p>
             </div>
+            <div id="customizer"></div>
+        </section>
+
+        <!-- ===== 3D Showcase ===== -->
+        <section class="section section-alt">
             <div class="showcase">
                 <div class="showcase-stage" id="showcaseStage">
                     <div class="showcase-ring" id="showcaseRing"></div>
@@ -411,6 +416,8 @@
                         '<p>' + p.description + '</p>' +
                         '<div class="foot">' +
                         '<span class="price">' + money(p) + ' <small>per ' + p.unit + '</small></span>' +
+                        '<div class="card-actions">' +
+                        '<button type="button" class="mini-btn mini-btn--cart" data-add-to-cart="' + p.id + '"><i class="fa-solid fa-cart-plus"></i> Add</button>' +
                         '<a href="https://wa.me/' + shopPhone + '" target="_blank" rel="noopener" class="mini-btn"><i class="fa-brands fa-whatsapp"></i> Order</a>' +
                         '</div>' +
                         '</div>' +
@@ -558,9 +565,11 @@
         <!-- ===== 3D animations & extra functionality ===== -->
         <div class="scroll-progress" id="scrollProgress"></div>
         <button class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+        <script src="config.js"></script>
         <script src="effects.js"></script>
         <script src="hero3d.js"></script>
         <script src="film3d.js"></script>
+        <script src="cart.js"></script>
     </body>
 
 </html>
