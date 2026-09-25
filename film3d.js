@@ -16,6 +16,19 @@
 (function () {
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    var isTablet = window.matchMedia('(max-width: 1100px)').matches;
+    var memory = navigator.deviceMemory || 4;
+    var QUALITY = window.NAC_QUALITY || (isMobile || memory <= 2
+        ? 'low'
+        : isTablet || memory <= 4
+            ? 'medium'
+            : 'high');
+    var QUALITY_PROFILES = {
+        high: { pixelRatio: 2, wheat: 7000, particles: 9000, dust: 480, shadows: true },
+        medium: { pixelRatio: 1.5, wheat: 4200, particles: 5200, dust: 280, shadows: true },
+        low: { pixelRatio: 1, wheat: 1800, particles: 2400, dust: 120, shadows: false },
+    };
+    var profile = QUALITY_PROFILES[QUALITY] || QUALITY_PROFILES.medium;
 
     var canvas = document.getElementById('film3d');
     var driver = document.getElementById('filmDriver');
@@ -59,9 +72,9 @@
         camera.position.set(0, 0.7, 14);
 
         var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: !isMobile, alpha: false });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, profile.pixelRatio));
         renderer.setClearColor(0xf2e0c2, 1);
-        if (renderer.shadowMap) renderer.shadowMap.enabled = !isMobile;
+        if (renderer.shadowMap) renderer.shadowMap.enabled = profile.shadows;
         if (renderer.outputEncoding !== undefined) renderer.outputEncoding = 2; // sRGB
 
         // ---------------------------------------------------------- lighting
@@ -69,7 +82,7 @@
 
         var sun = new THREE.DirectionalLight(0xffd9a0, 2.1);
         sun.position.set(10, 14, 8);
-        if (!isMobile) {
+        if (profile.shadows) {
             sun.castShadow = true;
             sun.shadow.mapSize.width = 1024;
             sun.shadow.mapSize.height = 1024;
@@ -97,7 +110,7 @@
 
         // ================================================== 1. WHEAT FIELD
         // Instanced blades with a vertex-shader wind.
-        var WHEAT_COUNT = isMobile ? 2400 : 7000;
+        var WHEAT_COUNT = profile.wheat;
         var FIELD = 66;
 
         var wheatVert = [
@@ -360,7 +373,7 @@
         scene.add(kitchen);
 
         // ============================================ 3. WHEAT -> FLOUR
-        var PCOUNT = isMobile ? 3200 : 9000;
+        var PCOUNT = profile.particles;
         var pGeo = new THREE.BufferGeometry();
         var pPos = new Float32Array(PCOUNT * 3);
         var pTgt = new Float32Array(PCOUNT * 3);
@@ -461,7 +474,7 @@
         scene.add(particles);
 
         // ------------------------------------------------- atmosphere (dust)
-        var DCOUNT = isMobile ? 160 : 480;
+        var DCOUNT = profile.dust;
         var dGeo = new THREE.BufferGeometry();
         var dPos = new Float32Array(DCOUNT * 3);
         for (var d2 = 0; d2 < DCOUNT; d2++) {
